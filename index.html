@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffd900" />
+    <title>토토군: 토요일 토요일은 군산이다</title>
+    <meta
+      name="description"
+      content="2026년 8월 22일, 오래된 친구와 군산에서 다시 쓰는 하루"
+    />
+  <link rel="stylesheet" href="styles.css?v=20260818-67" />
+  </head>
+  <body class="intro-open">
+    <div class="noise" aria-hidden="true"></div>
+
+    <section class="intro" id="intro" aria-label="무도데이 오프닝">
+      <div class="intro-film" aria-hidden="true">
+        <img
+          src="https://img.youtube.com/vi/HXLwnHGHf9c/maxresdefault.jpg"
+          alt=""
+        />
+      </div>
+      <div class="intro-vignette" aria-hidden="true"></div>
+      <div class="intro-copy">
+        <p class="intro-line line-1">누구에게나</p>
+        <p class="intro-line line-2">오랜 시간을 함께한 사람이 있습니다.</p>
+        <p class="intro-line line-3">그런데 둘이 여행은 제대로 해봤나?</p>
+        <div class="intro-title line-4">
+          <img
+            class="intro-mascot"
+            src="assets/totogun-logo-final.png"
+            alt="토요일 토요일은 군산이다, 토토군 특집 로고"
+          />
+          <span class="intro-edition">2026.08.22 · 군산 우정여행</span>
+        </div>
+        <button class="enter-button line-5" id="enterButton" type="button">
+          <span>여행 시작하기</span>
+          <b>▶</b>
+        </button>
+      </div>
+    </section>
+
+    <section class="case-gate" id="caseGate" aria-hidden="true" aria-label="007 여행 가방">
+      <div class="case-stage">
+        <div class="case-caption" aria-live="polite">
+          <span>PD</span>
+          <strong id="caseCaption">가방부터 한번 눕혀보세요.</strong>
+        </div>
+
+        <div class="briefcase" id="briefcase">
+          <button class="case-inspect" id="caseInspect" type="button" aria-label="가방을 눕혀 잠금장치 확인하기">
+            <span>CLICK</span>
+            <b>가방을 눕혀보세요</b>
+          </button>
+          <div class="case-render" aria-hidden="true">
+            <img class="case-render-frame frame-upright" src="assets/generated/briefcase/closed-upright.png?v=2" alt="" />
+            <img class="case-render-frame frame-laid" src="assets/generated/briefcase/closed-laid.png?v=2" alt="" />
+            <img class="case-render-frame frame-open" src="assets/generated/briefcase/open.png?v=2" alt="" />
+          </div>
+          <button class="case-peek" id="casePeek" type="button" aria-label="가방 안을 들여다보고 배지 펼치기">
+            <span class="case-badge-pile" aria-hidden="true">
+              <img src="assets/generated/badges/comma.png?v=2" alt="" />
+              <img src="assets/generated/badges/myeongsu-12.png?v=2" alt="" />
+              <img src="assets/generated/badges/partner.png?v=2" alt="" />
+              <img src="assets/generated/badges/seven-princesses.png?v=2" alt="" />
+              <img src="assets/generated/badges/six-hometown.png?v=2" alt="" />
+              <img src="assets/generated/badges/telepathy.png?v=2" alt="" />
+              <img src="assets/generated/badges/ha-and-su.png?v=2" alt="" />
+              <img src="assets/generated/badges/gunsan-map.png?v=2" alt="" />
+            </span>
+            <strong>가방 안 확인하기</strong>
+          </button>
+          <div class="case-handle" aria-hidden="true"></div>
+          <div class="case-lid">
+            <div class="case-lid-inside">
+              <img src="assets/totogun-logo-final.png" alt="토토군 여행단" />
+              <p>Y × J · GUNSAN · 2026.08.22</p>
+            </div>
+          </div>
+
+          <div class="case-base" aria-hidden="true"></div>
+          <div class="case-contents" aria-label="가방 속 무도 특집 배지">
+              <button class="case-prop special-badge" type="button" data-content="comma" data-target="#ending" aria-label="쉼표 특집 기차 간식 공유 콘텐츠 보기">
+                <span class="badge-pin"><img src="assets/generated/badges/comma.png?v=2" alt="쉼표 특집 3D 배지" /></span>
+                <small>기차 2 · 간식 나눔</small>
+              </button>
+              <button class="case-prop special-badge" type="button" data-content="nostalgia" data-target='.stage[data-stage="8"]' aria-label="명수는 12살 특집 추억의 장난감 사주기 콘텐츠 보기">
+                <span class="badge-pin"><img src="assets/generated/badges/myeongsu-12.png?v=2" alt="명수는 12살 특집 3D 배지" /></span>
+                <small>경암동 · 추억 상점</small>
+              </button>
+              <button class="case-prop special-badge" type="button" data-content="partner" data-target='.stage[data-stage="6"]' aria-label="짝꿍 특집 우정 가위바위보 콘텐츠 보기">
+                <span class="badge-pin"><img src="assets/generated/badges/partner.png?v=2" alt="짝꿍 특집 3D 배지" /></span>
+                <small>말랭이마을 · 짝꿍</small>
+              </button>
+              <button class="case-prop special-badge" type="button" data-content="princess" data-target='.stage[data-stage="0"]' aria-label="소문난 칠공주 특집 기차 메이크업 콘텐츠 보기">
+                <span class="badge-pin"><img src="assets/generated/badges/seven-princesses.png?v=2" alt="소문난 칠공주 특집 3D 배지" /></span>
+                <small>기차 1 · 메이크업</small>
+              </button>
+              <button class="case-prop special-badge" type="button" data-content="bicycle" data-target='.stage[data-stage="4"]' aria-label="여섯이 네 고향 자전거 첫 만남 상황극 콘텐츠 보기">
+                <span class="badge-pin"><img src="assets/generated/badges/six-hometown.png?v=2" alt="여섯이 네 고향 특집 3D 배지" /></span>
+                <small>진포공원 · 자전거 상황극</small>
+              </button>
+              <button class="case-prop special-badge" type="button" data-content="telepathy" data-target='.stage[data-stage="0"]' aria-label="텔레파시 특집 우정 테스트 콘텐츠 보기">
+                <span class="badge-pin"><img src="assets/generated/badges/telepathy.png?v=2" alt="텔레파시 특집 3D 배지" /></span>
+                <small>기차 안 텔레파시</small>
+              </button>
+              <button class="case-prop special-badge" type="button" data-content="hawasu" data-target='.stage[data-stage="5"]' aria-label="하와 수 초원사진관 우정사진 콘텐츠 보기">
+                <span class="badge-pin"><img src="assets/generated/badges/ha-and-su.png?v=2" alt="하와 수 특집 3D 배지" /></span>
+                <small>우정사진관</small>
+              </button>
+              <button class="case-prop special-badge badge-map" type="button" data-content="route" data-target="#journey" aria-label="접힌 군산 지도, 군산 하루 코스 보기">
+                <span class="badge-pin map-badge-pin"><img src="assets/generated/badges/gunsan-map.png?v=2" alt="접힌 군산 작전지도 3D 배지" /></span>
+                <small>전체 일정 지도</small>
+              </button>
+          </div>
+
+          <div class="case-edge" aria-hidden="true"><i></i><i></i></div>
+        </div>
+
+        <div class="case-lock-panel" role="dialog" aria-label="007 가방 비밀번호">
+          <span class="lock-eyebrow">TOP SECRET · Y × J</span>
+          <p>비밀번호를 입력하세요</p>
+          <div class="combo-lock" aria-label="가방 비밀번호 입력">
+            <button class="combo-wheel" type="button" data-digit="0" aria-label="첫 번째 숫자 0">0</button>
+            <button class="combo-wheel" type="button" data-digit="0" aria-label="두 번째 숫자 0">0</button>
+            <button class="combo-wheel" type="button" data-digit="0" aria-label="세 번째 숫자 0">0</button>
+          </div>
+          <button class="unlock-case" id="unlockCase" type="button">UNLOCK</button>
+          <span class="case-message" id="caseMessage">숫자를 누르면 다이얼이 돌아갑니다.</span>
+        </div>
+      </div>
+
+      <div class="case-broadcast-subtitle" id="caseGameCaption" aria-live="polite">
+        <span>의문의 검은 가방이 두 사람 앞에 나타났다!</span>
+      </div>
+    </section>
+
+    <div class="mission-modal" id="missionModal" hidden>
+      <div class="mission-modal-backdrop" data-mission-close></div>
+      <div class="mission-title-splash" id="missionTitleSplash" aria-hidden="true"></div>
+      <article class="mission-modal-card" role="dialog" aria-modal="true" aria-labelledby="missionModalTitle">
+        <button class="mission-modal-close" type="button" data-mission-close aria-label="콘텐츠 팝업 닫기">×</button>
+        <div class="mission-modal-content" id="missionModalContent"></div>
+      </article>
+    </div>
+
+    <div class="mission-stamp-feedback" id="missionStampFeedback" hidden aria-live="assertive" aria-atomic="true">
+      <div class="mission-stamp-mark">
+        <img id="missionStampImage" alt="" />
+        <strong id="missionStampText"></strong>
+      </div>
+    </div>
+
+    <section class="route-transition" id="routeTransition" aria-hidden="true" aria-label="군산행 전환 화면">
+      <div class="chalk-doodles" aria-hidden="true">
+        <span class="doodle doodle-friends">○♡○<small>/|\ /|\</small></span>
+        <span class="doodle doodle-note">방긋방긋</span>
+        <span class="doodle doodle-star">☆<small>⋆ ˚｡⋆</small></span>
+        <span class="doodle doodle-bike">○—○<small>두 바퀴로 군산!</small></span>
+        <span class="doodle doodle-house">△<small>추억 도착</small></span>
+        <span class="doodle doodle-heart">♡</span>
+      </div>
+      <div class="crayon-scene" aria-hidden="true">
+        <svg class="crayon-traces" viewBox="0 0 1000 600" preserveAspectRatio="none">
+          <path class="crayon-trace trace-one" d="M-40 470 C120 170 280 140 410 315 S700 520 1040 118" />
+          <path class="crayon-trace trace-two" d="M-25 500 C155 210 292 190 416 338 S710 548 1030 150" />
+          <path class="crayon-circle" d="M600 135 C780 40 945 120 925 280 C905 425 670 430 590 300 C535 210 560 158 600 135" />
+        </svg>
+        <div class="crayon-hand">
+          <svg viewBox="0 0 190 145" role="presentation">
+            <g class="held-crayon">
+              <path d="M18 20 L132 92 L118 112 L5 39 Z" fill="#ecd247" stroke="#312e29" stroke-width="6" stroke-linejoin="round" />
+              <path d="M5 39 L1 17 L18 20 Z" fill="#ecd247" stroke="#312e29" stroke-width="5" stroke-linejoin="round" />
+              <path d="M1 17 L8 20 L5 25 Z" fill="#d3ae27" />
+              <path d="M40 36 L152 105 L139 126 L27 53 Z" fill="#b5523f" stroke="#312e29" stroke-width="6" stroke-linejoin="round" />
+              <path d="M55 49 L65 33 M76 62 L86 46 M98 76 L108 60" stroke="#f5df57" stroke-width="5" />
+              <text x="62" y="48" fill="#fff0b8" font-size="12" font-weight="900" transform="rotate(32 62 48)">CRAYON</text>
+            </g>
+            <path d="M90 83 C105 63 123 66 132 79 C147 67 166 75 166 91 C183 91 191 108 181 121 C170 136 142 144 113 139 C87 135 71 119 70 104 C69 92 77 84 90 83 Z" fill="#e7b58c" stroke="#312e29" stroke-width="6" stroke-linejoin="round" />
+            <path d="M111 91 C126 79 143 86 140 101 M137 101 C151 89 166 98 160 112" fill="none" stroke="#b87b59" stroke-width="5" stroke-linecap="round" />
+          </svg>
+          <span>슥슥—</span>
+        </div>
+      </div>
+      <div class="transition-content">
+        <div class="transition-ticket">
+          <span>2026 무도데이 여름특집</span>
+          <strong>출연 Y × J</strong>
+          <b>08.22 SAT</b>
+        </div>
+        <p class="transition-kicker">오래된 친구 둘, 오늘의 목적지는</p>
+        <h2><span>토요일</span><strong>군산행</strong></h2>
+        <div class="transition-route" aria-hidden="true">
+          <span class="route-start">출발</span>
+          <div class="route-track"><i class="route-train">▶</i></div>
+          <span class="route-end">군산</span>
+        </div>
+        <p class="transition-sub">친구 둘 · 추억 다수 · 계획은 적당히</p>
+        <img class="transition-logo" src="assets/totogun-logo-final.png" alt="토토군 특집 로고" />
+      </div>
+      <div class="transition-wash" aria-hidden="true"></div>
+    </section>
+
+    <header class="site-header">
+      <a class="mini-logo" href="#top" aria-label="처음으로">
+        <img src="assets/totogun-logo-final.png" alt="토토군" />
+      </a>
+      <nav aria-label="주요 메뉴">
+        <a href="#journey">오늘의 여정</a>
+        <a href="#ending">우리의 밤</a>
+      </nav>
+      <button class="case-return" id="caseReturn" type="button">가방으로</button>
+      <button class="caption-button" id="captionButton" type="button">자막 ON</button>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-ticker" aria-hidden="true">
+          <span>2026.08.22 SAT</span>
+          <span>전북 군산</span>
+          <span>출연자 단 두 명</span>
+          <span>우정 정상 영업 중</span>
+        </div>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">2026 무도데이 여름특집</p>
+            <img class="hero-main-logo" src="assets/totogun-logo-final.png" alt="토요일 토요일은 군산이다, 토토군 특집" />
+            <p class="hero-subtitle">오래된 친구와 군산에서 다시 써 내려가는 하루</p>
+            <div class="friend-caption">
+              <span>우리는 언제부터</span>
+              <strong>이렇게 오래된 친구가 됐을까.</strong>
+            </div>
+            <div class="hero-actions">
+              <a class="primary-button" href="#journey">오늘의 장면 보기</a>
+              <button class="secondary-button" id="openingReplay" type="button">오프닝 다시 보기</button>
+            </div>
+          </div>
+
+          <div class="hero-poster" aria-label="군산 여행 포스터">
+            <div class="poster-badge">단 하루 한정</div>
+            <div class="poster-photo">
+              <img
+                src="https://img.youtube.com/vi/HXLwnHGHf9c/maxresdefault.jpg"
+                alt="MBC 무한도전 군산 특집 공식 영상 썸네일"
+              />
+            </div>
+            <div class="poster-caption caption-pop">친구 둘 · 추억 다수 · 정상 사진 거의 없음</div>
+            <a
+              class="source-link"
+              href="https://www.youtube.com/watch?v=HXLwnHGHf9c"
+              target="_blank"
+              rel="noreferrer"
+            >원작 영상 보기 ↗</a>
+          </div>
+        </div>
+
+        <div class="countdown-card">
+          <div>
+            <span class="live-dot"></span>
+            여행 시작까지
+          </div>
+          <strong id="countdown">D-6</strong>
+          <p>2026년 8월 22일 토요일 · 군산</p>
+        </div>
+      </section>
+
+      <section class="manifesto">
+        <p>그 시절 우리를 웃게 했던 장면을 따라</p>
+        <h2>이번에는 우리의 장면을 남깁니다.</h2>
+        <div class="manifesto-tags" aria-label="여행 핵심 키워드">
+          <span>#우정</span>
+          <span>#추억</span>
+          <span>#군산</span>
+          <span>#무한도전</span>
+        </div>
+      </section>
+
+      <section class="journey" id="journey">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">AUG 22 · TODAY'S ROUTE</p>
+            <h2>오늘 우리가 남길 장면들</h2>
+          </div>
+          <p>확정된 순서입니다. 장소 간 세부 이동 시간은 현장에서 유연하게 조정합니다.</p>
+        </div>
+
+        <div class="schedule-control" aria-label="군산 하루 일정 보기 설정">
+          <div class="schedule-control-top">
+            <div class="schedule-date-block">
+              <span class="schedule-calendar" aria-hidden="true"><b>8</b><strong>22</strong></span>
+              <div>
+                <span class="schedule-overline">SATURDAY · GUNSAN</span>
+                <strong>2026년 8월 22일 하루 플랜</strong>
+              </div>
+            </div>
+            <div class="view-switcher" role="group" aria-label="일정 보기 방식">
+              <button class="view-button active" type="button" data-view="timeline" aria-pressed="true">☷ 타임라인</button>
+              <button class="view-button" type="button" data-view="compact" aria-pressed="false">▦ 카드</button>
+            </div>
+          </div>
+          <div class="schedule-stats" aria-label="일정 요약">
+            <div><span>군산 도착</span><strong>10:00</strong><small>여행 본편 시작</small></div>
+            <div><span>전체 일정</span><strong>12</strong><small>개의 장면</small></div>
+            <div><span>기차 세션</span><strong>2</strong><small>공주 · 쉼표 · 텔레파시</small></div>
+            <div><span>버스 출발</span><strong>20:20</strong><small>군산 터미널</small></div>
+          </div>
+          <div class="filter-strip" aria-label="일정 필터">
+            <span>보기</span>
+            <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">전체</button>
+            <button class="filter-button" type="button" data-filter="travel" aria-pressed="false">이동</button>
+            <button class="filter-button" type="button" data-filter="break" aria-pressed="false">먹기·쉬기</button>
+            <button class="filter-button" type="button" data-filter="mission" aria-pressed="false">미션</button>
+            <button class="filter-button" type="button" data-filter="memory" aria-pressed="false">추억</button>
+          </div>
+        </div>
+
+        <div class="progress-wrap" aria-label="추억 저장 진행률">
+          <div class="progress-bar"><span id="progressFill"></span></div>
+          <span id="progressLabel">0 / 12 장면 저장</span>
+        </div>
+
+        <div class="timeline" data-current-view="timeline">
+          <div class="timeline-labels" aria-hidden="true"><span>시간</span><span>하루 일정</span></div>
+          <article class="stage stage-yellow" data-stage="0" data-group="travel mission">
+            <div class="timeline-time"><strong>기차 1</strong><small>첫 번째 세션</small><span>이동 중</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline">
+                <span class="stage-number">TRAIN 01</span>
+                <span class="stage-status">공주 특집</span>
+              </div>
+              <div class="stage-meta"><span>🚆 기차 안</span><span>⏱ 30분 미션</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">소문난 7공주 · 프린세스 메이크업</p>
+              <h3>군산 도착 전, 오늘의 얼굴 완성</h3>
+              <p class="stage-summary">제한 시간 안에 화장을 마치고 기차 인증샷을 남긴다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <div class="detail-grid">
+                  <div>
+                    <h4>진행 순서</h4>
+                    <ul>
+                      <li>공주 특집 배지를 눌러 30분 타이머 시작</li>
+                      <li>각자 메이크업을 완성하고 STOP</li>
+                      <li>기차 안 인증샷 업로드 후 스탬프 받기</li>
+                    </ul>
+                  </div>
+                  <div class="quote-card">첫 번째 기차 미션<br /><strong>공주들의 숨은 비법 대공개</strong></div>
+                </div>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">우리의 장면으로 저장</button>
+                  <label class="upload-button">사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-blue" data-stage="1" data-group="travel mission break">
+            <div class="timeline-time"><strong>기차 2</strong><small>두 번째 세션</small><span>이동 중</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">TRAIN 02</span><span class="stage-status">쉼표 · 텔레파시</span></div>
+              <div class="stage-meta"><span>🚆 기차 안</span><span>🍪 간식</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">무도 쉼표 × 텔레파시 특집</p>
+              <h3>나눠 먹고, 같은 곳을 떠올리기</h3>
+              <p class="stage-summary">서로 준비한 간식을 공개한 뒤 추억의 장소 텔레파시 게임을 진행한다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <h4>진행 순서</h4>
+                <ul>
+                  <li>쉼표 배지: 서로 몰래 준비한 간식 동시 공개</li>
+                  <li>텔레파시 배지: 각자 추억의 지역과 장소 제출</li>
+                  <li>5번 안에 같은 장소를 맞히면 미션 성공</li>
+                </ul>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">우리의 장면으로 저장</button>
+                  <label class="upload-button">사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-red" data-stage="2" data-group="travel memory">
+            <div class="timeline-time"><strong>10:00</strong><small>군산 입성</small><span>군산 도착</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">ARRIVAL</span><span class="stage-status">도착</span></div>
+              <div class="stage-meta"><span>📍 군산</span><span>🕙 오전 10시</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">토토군 본편 시작</p>
+              <h3>마침내 군산</h3>
+              <p class="stage-summary">두 번의 기차 미션을 마치고 군산에서 하루 여행의 본편을 시작한다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <h4>도착 체크</h4>
+                <ul><li>짐과 소지품 확인</li><li>군산 도착 인증샷</li><li>빈해원으로 바로 이동</li></ul>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">결과 저장하기</button>
+                  <label class="upload-button">면발 사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-pink" data-stage="3" data-group="break mission">
+            <div class="timeline-time"><strong>이른 점심</strong><small>도착 직후</small><span>빈해원</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">SCENE 01</span><span class="stage-status">점심</span></div>
+              <div class="stage-meta"><span>📍 빈해원</span><span>🍜 중식</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">여섯이 네 고향 · 면발 게임</p>
+              <h3>면발은 짧게, 우정은 길게</h3>
+              <p class="stage-summary">이른 점심을 먹으며 짬뽕 면발 길이 내기를 진행한다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <div class="rule-strip"><span>① 한 번만 집기</span><span>② 동시에 들기</span><span>③ 짧은 사람이 패배</span></div>
+                <div class="bet-card"><span>오늘의 내기</span><strong>패자가 경암동에서 상대의 추억 장난감 사주기</strong></div>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">우리의 장면으로 저장</button>
+                  <label class="upload-button">재현 사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-green" data-stage="4" data-group="mission memory">
+            <div class="timeline-time"><strong>점심 후</strong><small>산책</small><span>진포해양테마공원</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">SCENE 02</span><span class="stage-status">패러디</span></div>
+              <div class="stage-meta"><span>📍 진포해양테마공원</span><span>🚲 산책</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">여섯이 네 고향 · 처음 만난 사이</p>
+              <h3>그리고 어느 여름날</h3>
+              <p class="stage-summary">공원을 걸으며 유재석과 하하의 첫 만남 같은 자전거 상황극을 재현한다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <div class="conversation-card"><span>오늘의 질문</span><strong id="bikeQuestion">“혼자 왔어요?”</strong><button class="shuffle-question" type="button">다른 질문</button></div>
+                <p>서로 처음 본 사람처럼 존댓말로 대화하고, 원작의 어색한 첫 만남 장면을 사진이나 영상으로 남긴다.</p>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">우리의 장면으로 저장</button>
+                  <label class="upload-button">우정 사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-cream" data-stage="5" data-group="memory mission">
+            <div class="timeline-time"><strong>오후</strong><small>사진 촬영</small><span>초원사진관</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">SCENE 03</span><span class="stage-status">하와 수</span></div>
+              <div class="stage-meta"><span>📍 초원사진관</span><span>📷 우정사진</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">하와 수 × 우정사진관</p>
+              <h3>빠질 수 없는 기념촬영</h3>
+              <p class="stage-summary">정준하와 박명수처럼 진지한 한 장과 두 사람다운 예능 한 장을 찍는다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <div class="shot-list"><span>01 진지한 우정사진</span><span>02 하와 수 포즈</span><span>03 두 사람다운 표정</span><span>04 대표사진 선택</span></div>
+                <div class="quote-card green">여행에 남는 건<br /><strong>사진뿐</strong></div>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">휴식도 장면으로 저장</button>
+                  <label class="upload-button">카페 사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-purple" data-stage="6" data-group="mission memory">
+            <div class="timeline-time"><strong>오후</strong><small>계단 미션</small><span>말랭이마을</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">SCENE 04</span><span class="stage-status">짝꿍</span></div>
+              <div class="stage-meta"><span>📍 말랭이마을</span><span>✌️ 가위바위보</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">우정회복 프로젝트 · 더 친해지길 바래</p>
+              <h3>아직도 친해지는 중</h3>
+              <p class="stage-summary">계단에서 하하와 정형돈의 우정 가위바위보 장면을 재현한다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <div class="rule-strip purple"><span>① 멀리 떨어져 시작</span><span>② 승자만 이동</span><span>③ 마주치면 성공</span></div>
+                <p>계단 아래에서 시작해 가위바위보 승자만 올라간다. 마주치는 순간 원작의 어색하고 진지한 표정을 재현한다.</p>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">선물 고르기 완료</button>
+                  <label class="upload-button">몰래 사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-blue" data-stage="7" data-group="break memory">
+            <div class="timeline-time"><strong>휴식</strong><small>카페 타임</small><span>군산과자조합</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">SCENE 05</span><span class="stage-status">휴식</span></div>
+              <div class="stage-meta"><span>📍 군산과자조합</span><span>☕ 카페</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">중간 점검 · 카페 타임</p>
+              <h3>일단 좀 쉽시다</h3>
+              <p class="stage-summary">사진을 확인하고 체력을 채우며 남은 일정을 정리한다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <h4>휴식 체크</h4>
+                <ul><li>지금까지 찍은 사진 확인</li><li>휴대폰과 보조배터리 충전</li><li>경암동·중동호떡·버스 시간 확인</li></ul>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">우리의 장면으로 저장</button>
+                  <label class="upload-button">영상 썸네일 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-night" data-stage="8" data-group="memory break">
+            <div class="timeline-time"><strong>늦은 오후</strong><small>철길 산책</small><span>경암동철길마을</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">SCENE 06</span><span class="stage-status">추억 상점</span></div>
+              <div class="stage-meta"><span>📍 경암동철길마을</span><span>🧸 장난감 · 군것질</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">명수는 12살 · 추억의 장난감</p>
+              <h3>서로의 어린 시절을 골라드립니다</h3>
+              <p class="stage-summary">추억의 장난감과 군것질을 구경하고 서로에게 하나씩 골라준다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail">
+                <div class="rule-strip purple"><span>① 따로 고르기</span><span>② 예산 안에서 선택</span><span>③ 동시에 공개</span></div>
+                <p>빈해원 면발 게임의 패자가 장난감 값을 계산하고, 각자 고른 군것질은 함께 나눠 먹는다.</p>
+                <div class="memory-tools">
+                  <button class="save-scene" type="button">추억 상점 저장</button>
+                  <label class="upload-button">장난감 사진 올리기<input type="file" accept="image/*" /></label>
+                  <div class="photo-preview"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="stage stage-red" data-stage="9" data-group="break memory">
+            <div class="timeline-time"><strong>저녁</strong><small>요깃거리</small><span>중동호떡</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">SCENE 07</span><span class="stage-status">저녁</span></div>
+              <div class="stage-meta"><span>📍 중동호떡</span><span>🥞 저녁 겸 간식</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">오늘의 마지막 군산 한입</p>
+              <h3>버스 타기 전 호떡 한 장</h3>
+              <p class="stage-summary">중동호떡에서 저녁 겸 요깃거리를 먹으며 하루를 잠깐 정리한다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">장면 펼쳐보기</button>
+              <div class="stage-detail"><ul><li>호떡과 음료 주문</li><li>오늘 가장 웃겼던 장면 하나씩 고르기</li><li>터미널 이동 시간 확인</li></ul><div class="memory-tools"><button class="save-scene" type="button">저녁 장면 저장</button><label class="upload-button">호떡 사진 올리기<input type="file" accept="image/*" /></label><div class="photo-preview"></div></div></div>
+            </div>
+          </article>
+
+          <article class="stage stage-blue" data-stage="10" data-group="travel">
+            <div class="timeline-time"><strong>출발 전</strong><small>탑승 준비</small><span>버스터미널 이동</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">RETURN</span><span class="stage-status">이동</span></div>
+              <div class="stage-meta"><span>📍 군산시외버스터미널</span><span>🎫 승차권 확인</span><span class="plan-chip confirmed">확정</span></div>
+              <p class="stage-kicker">귀환 작전</p><h3>이제 집으로 갈 시간</h3>
+              <p class="stage-summary">터미널로 이동해 승차권과 소지품을 확인하고 버스를 기다린다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">체크리스트 보기</button>
+              <div class="stage-detail"><div class="rule-strip"><span>① 승차권</span><span>② 보조배터리</span><span>③ 장난감 · 사진</span></div><div class="memory-tools"><button class="save-scene" type="button">탑승 준비 완료</button><label class="upload-button">터미널 사진 올리기<input type="file" accept="image/*" /></label><div class="photo-preview"></div></div></div>
+            </div>
+          </article>
+
+          <article class="stage stage-night" data-stage="11" data-group="travel memory" id="ending">
+            <div class="timeline-time"><strong>20:20</strong><small>여행 종료</small><span>버스 출발</span></div>
+            <span class="timeline-dot"></span>
+            <div class="stage-card">
+              <div class="stage-topline"><span class="stage-number">EPILOGUE</span><span class="stage-status">엔딩</span></div>
+              <div class="stage-meta"><span>🚌 버스 탑승</span><span>🕗 오후 8시 20분</span><span class="plan-chip night">확정</span></div>
+              <p class="stage-kicker">사진 정리 · 오늘의 한 문장</p><h3>토토군, 귀환합니다</h3>
+              <p class="stage-summary">돌아가는 버스에서 사진을 정리하고 오늘의 마지막 장면을 만든다.</p>
+              <button class="stage-toggle" type="button" aria-expanded="false">엔딩 만들기</button>
+              <div class="stage-detail">
+                <div class="conversation-card dark"><span>오늘의 질문</span><strong id="nightQuestion">“오늘 새로 발견한 서로의 모습은?”</strong><button class="shuffle-question" id="nightShuffle" type="button">다른 질문</button></div>
+                <div class="ending-form"><label>오늘의 한 문장<textarea id="finalSentence" rows="2" placeholder="오늘을 한 문장으로 남겨보세요."></textarea></label><label>오늘의 명대사<input id="bestQuote" type="text" placeholder="오늘 가장 많이 웃었던 한마디" /></label><button class="make-ending" id="makeEnding" type="button">오늘의 엔딩 만들기</button></div>
+                <div class="memory-tools"><button class="save-scene" type="button">2026.08.22 저장하기</button><label class="upload-button">마지막 사진 올리기<input type="file" accept="image/*" /></label><div class="photo-preview"></div></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="finale" aria-label="무도데이 엔딩">
+        <p>그때의 무도</p>
+        <span>↓</span>
+        <p>오늘의 우리</p>
+        <h2>오래 봤다고 다 아는 것은 아니지만,<br />오래 볼수록 함께 기억할 장면은 많아진다.</h2>
+      </section>
+    </main>
+
+    <aside class="broadcast-caption" id="broadcastCaption" aria-live="polite">
+      <span>친구 둘 · 추억 다수</span>
+      <strong>우정 정상 영업 중</strong>
+    </aside>
+
+    <dialog class="ending-dialog" id="endingDialog">
+      <button class="dialog-close" id="dialogClose" type="button" aria-label="닫기">×</button>
+      <p class="eyebrow">2026 무도데이 여름특집</p>
+      <h2>토요일 토요일은 군산이다</h2>
+      <div class="credit-lines">
+        <p><span>출연</span><strong>친구 A · 친구 B</strong></p>
+        <p><span>촬영</span><strong>서로</strong></p>
+        <p><span>장소</span><strong>군산</strong></p>
+        <p><span>제작비</span><strong>대부분 면발이 짧았던 사람</strong></p>
+      </div>
+      <blockquote id="endingSentence">처음 만났어도 결국 친구가 되었을 우리.</blockquote>
+      <p class="ending-quote" id="endingQuote"></p>
+      <div class="final-credit">우리는 다음 여행에서도<br /><strong>여전히 친구이기로 했다.</strong></div>
+    </dialog>
+
+    <footer>
+      <strong>∞ 무도데이</strong>
+      <p>2026.08.22 · GUNSAN · FOR TWO FRIENDS</p>
+      <small>개인적인 비공개 여행 기록용 콘셉트 초안</small>
+    </footer>
+
+  <script src="script.js?v=20260818-26"></script>
+  </body>
+</html>
