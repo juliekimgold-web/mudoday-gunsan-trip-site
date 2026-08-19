@@ -411,51 +411,74 @@ body.snack-chance-open { overflow:hidden; }
 .destiny-dice-title { position:absolute; top:-2.2rem; right:7%; z-index:5; display:flex; align-items:flex-end; gap:.25rem; transform:rotate(-5deg); }
 .destiny-dice-title span { color:#fff; font-size:clamp(1rem,2.8vw,1.55rem); font-weight:1000; -webkit-text-stroke:4px #3b1b15; paint-order:stroke fill; }
 .destiny-dice-title strong { color:#ffd257; font-size:clamp(2rem,6vw,4rem); font-weight:1000; letter-spacing:-.1em; -webkit-text-stroke:6px #612019; paint-order:stroke fill; text-shadow:0 6px 0 #2a1510; }
-.destiny-die { --die-size:clamp(112px,24vw,168px); position:relative; width:clamp(190px,34vw,270px); height:clamp(175px,29vw,230px); perspective:900px; filter:drop-shadow(0 30px 20px rgba(0,0,0,.58)); }
-.destiny-die-shell { position:absolute; top:15%; left:50%; width:var(--die-size); height:var(--die-size); transform-style:preserve-3d; transform:translateX(-50%) rotateX(-25deg) rotateY(38deg); transform-origin:50% 50%; }
-.destiny-die-top {
+.destiny-die {
+  --dice-size:clamp(112px,24vw,168px);
+  --dice-half:calc(var(--dice-size) / 2);
+  --dice-radius:calc(var(--dice-size) * .115);
+  position:relative;
+  width:clamp(190px,34vw,270px);
+  height:clamp(175px,29vw,230px);
+  perspective:calc(var(--dice-size) * 4.4);
+  transform-style:preserve-3d;
+  transform:rotateX(-12deg) rotateY(17deg) rotateZ(-2deg);
+  filter:drop-shadow(0 30px 20px rgba(0,0,0,.58));
+}
+.destiny-die-shell {
+  position:absolute;
+  top:48%;
+  left:50%;
+  width:var(--dice-size);
+  height:var(--dice-size);
+  transform-style:preserve-3d;
+  transform:translate(-50%,-50%) translateZ(calc(var(--dice-half) * -1)) rotateX(0deg) rotateY(0deg);
+  transform-origin:50% 50%;
+  transition:transform 2.2s cubic-bezier(.16,.78,.12,1);
+  will-change:transform;
+}
+.destiny-cube-face {
   position:absolute;
   inset:0;
-  z-index:3;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-template-rows:repeat(3,1fr);
-  padding:17%;
-  border:4px solid #711c35;
-  border-radius:clamp(12px,2.2vw,20px);
-  background:linear-gradient(145deg,#d84068,#9e1742 72%);
-  box-shadow:inset 12px 12px 18px rgba(255,143,164,.35),inset -12px -15px 20px rgba(73,5,29,.42);
-  transform:rotateX(90deg) translateZ(calc(var(--die-size) / 2));
+  overflow:hidden;
+  border:clamp(3px,.7vw,5px) solid #6d1731;
+  border-radius:var(--dice-radius);
+  background-color:#b72b54;
+  background-repeat:no-repeat;
+  box-shadow:inset 13px 13px 21px rgba(255,138,164,.28),inset -15px -17px 24px rgba(52,3,19,.42),0 0 0 1px rgba(255,202,219,.16);
   backface-visibility:hidden;
 }
-.destiny-die-top i { align-self:center; justify-self:center; width:clamp(10px,2.3vw,18px); aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 35% 30%,#fff0a8,#e9a934 58%,#9c5a13 100%); box-shadow:inset 0 2px 2px rgba(255,255,255,.6),0 3px 2px rgba(73,8,22,.5); opacity:0; }
-.destiny-die[data-face="1"] .destiny-die-top i:nth-child(5),
-.destiny-die[data-face="2"] .destiny-die-top i:nth-child(1),
-.destiny-die[data-face="2"] .destiny-die-top i:nth-child(9),
-.destiny-die[data-face="3"] .destiny-die-top i:nth-child(1),
-.destiny-die[data-face="3"] .destiny-die-top i:nth-child(5),
-.destiny-die[data-face="3"] .destiny-die-top i:nth-child(9),
-.destiny-die[data-face="4"] .destiny-die-top i:nth-child(1),
-.destiny-die[data-face="4"] .destiny-die-top i:nth-child(3),
-.destiny-die[data-face="4"] .destiny-die-top i:nth-child(7),
-.destiny-die[data-face="4"] .destiny-die-top i:nth-child(9),
-.destiny-die[data-face="5"] .destiny-die-top i:nth-child(1),
-.destiny-die[data-face="5"] .destiny-die-top i:nth-child(3),
-.destiny-die[data-face="5"] .destiny-die-top i:nth-child(5),
-.destiny-die[data-face="5"] .destiny-die-top i:nth-child(7),
-.destiny-die[data-face="5"] .destiny-die-top i:nth-child(9),
-.destiny-die[data-face="6"] .destiny-die-top i:nth-child(1),
-.destiny-die[data-face="6"] .destiny-die-top i:nth-child(3),
-.destiny-die[data-face="6"] .destiny-die-top i:nth-child(4),
-.destiny-die[data-face="6"] .destiny-die-top i:nth-child(6),
-.destiny-die[data-face="6"] .destiny-die-top i:nth-child(7),
-.destiny-die[data-face="6"] .destiny-die-top i:nth-child(9) { opacity:1; }
-.destiny-die-side { position:absolute; inset:0; overflow:hidden; border:4px solid #66132f; border-radius:clamp(12px,2.2vw,20px); background:linear-gradient(145deg,#b52955,#771231); box-shadow:inset 10px 10px 17px rgba(255,119,151,.24),inset -12px -14px 18px rgba(48,2,17,.4); backface-visibility:hidden; }
-.destiny-die-side::after { content:""; position:absolute; inset:13%; opacity:.88; background:radial-gradient(circle,#f1bd50 0 12%,transparent 14%) 0 0 / 50% 50%; filter:drop-shadow(0 2px 1px rgba(60,4,18,.48)); }
-.side-left { transform:translateZ(calc(var(--die-size) / 2)); }
-.side-right { transform:rotateY(-90deg) translateZ(calc(var(--die-size) / 2)); }
+.destiny-cube-face::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent 34%,rgba(52,3,19,.2) 82%);
+  pointer-events:none;
+}
+.destiny-cube-face.face-1 {
+  background-image:radial-gradient(circle at 50% 50%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%);
+  transform:rotateX(-90deg) translateZ(var(--dice-half));
+}
+.destiny-cube-face.face-2 {
+  background-image:radial-gradient(circle at 28% 28%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 72%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%);
+  transform:rotateY(90deg) translateZ(var(--dice-half));
+}
+.destiny-cube-face.face-3 {
+  background-image:radial-gradient(circle at 28% 28%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 50% 50%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 72%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%);
+  transform:rotateY(0deg) translateZ(var(--dice-half));
+}
+.destiny-cube-face.face-4 {
+  background-image:radial-gradient(circle at 28% 28%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 28%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 28% 72%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 72%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%);
+  transform:rotateY(180deg) translateZ(var(--dice-half));
+}
+.destiny-cube-face.face-5 {
+  background-image:radial-gradient(circle at 28% 28%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 28%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 50% 50%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 28% 72%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 72%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%);
+  transform:rotateY(-90deg) translateZ(var(--dice-half));
+}
+.destiny-cube-face.face-6 {
+  background-image:radial-gradient(circle at 28% 25%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 25%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 28% 50%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 50%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 28% 75%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%),radial-gradient(circle at 72% 75%,#fff3b4 0 5.4%,#e9aa35 5.8% 9.3%,#9b5713 9.8% 11%,transparent 11.5%);
+  transform:rotateX(90deg) translateZ(var(--dice-half));
+}
 .snack-chance[data-scene="dice"] .destiny-die { animation:snackDiceArrival 1.05s cubic-bezier(.12,.9,.2,1) both; }
-.snack-chance[data-scene="rolling"] .destiny-die-shell { animation:snackDiceRoll 2.15s cubic-bezier(.25,.75,.16,1) both; }
+.snack-chance[data-scene="rolling"] .destiny-die { filter:drop-shadow(0 38px 24px rgba(0,0,0,.68)) drop-shadow(0 0 18px rgba(255,205,85,.22)); }
 .snack-dice-roll {
   margin-top:.1rem;
   padding:.82rem 1.6rem;
@@ -500,8 +523,7 @@ body.snack-chance-open { overflow:hidden; }
 @keyframes snackLogoHit { 0% { opacity:0; transform:translate(-50%,-50%) scale(1.55) rotate(-5deg); filter:blur(10px) brightness(1.8); } 62% { opacity:1; transform:translate(-50%,-50%) scale(.95) rotate(2deg); filter:none; } 80% { transform:translate(-50%,-50%) scale(1.04) rotate(-1deg); } 100% { opacity:1; transform:translate(-50%,-50%) scale(1); } }
 @keyframes snackTreatArrival { 0% { opacity:0; transform:translateX(var(--snack-entry,-20vw)) translateY(28px) rotate(-10deg) scale(.72); filter:blur(6px); } 70% { opacity:1; transform:translateX(0) rotate(2deg) scale(1.05); filter:none; } 100% { opacity:1; transform:none; } }
 .custard-treat { --snack-entry:20vw; }
-@keyframes snackDiceArrival { 0% { opacity:0; transform:translateY(-42vh) rotate(-380deg) scale(.45); } 70% { opacity:1; transform:translateY(15px) rotate(18deg) scale(1.08); } 84% { transform:translateY(-8px) rotate(-8deg) scale(.97); } 100% { opacity:1; transform:none; } }
-@keyframes snackDiceRoll { 0% { transform:translateX(-50%) rotateX(-25deg) rotateY(38deg) rotateZ(0); } 18% { transform:translate(-72%,-78px) rotateX(185deg) rotateY(220deg) rotateZ(95deg) scale(.88); } 38% { transform:translate(-24%,-122px) rotateX(390deg) rotateY(470deg) rotateZ(210deg) scale(1.04); } 58% { transform:translate(-68%,-58px) rotateX(610deg) rotateY(690deg) rotateZ(315deg) scale(.93); } 76% { transform:translate(-36%,-25px) rotateX(790deg) rotateY(865deg) rotateZ(410deg) scale(1.03); } 90% { transform:translate(-54%,-7px) rotateX(865deg) rotateY(940deg) rotateZ(455deg) scale(.98); } 100% { transform:translateX(-50%) rotateX(-25deg) rotateY(38deg) rotateZ(0); } }
+@keyframes snackDiceArrival { 0% { opacity:0; transform:translateY(-42vh) rotateX(-12deg) rotateY(17deg) rotateZ(-380deg) scale(.45); } 70% { opacity:1; transform:translateY(15px) rotateX(-12deg) rotateY(17deg) rotateZ(16deg) scale(1.08); } 84% { transform:translateY(-8px) rotateX(-12deg) rotateY(17deg) rotateZ(-8deg) scale(.97); } 100% { opacity:1; transform:rotateX(-12deg) rotateY(17deg) rotateZ(-2deg); } }
 @keyframes snackRollButtonPulse { to { box-shadow:0 7px 0 #40101f,0 14px 26px rgba(0,0,0,.5),0 0 24px rgba(255,214,84,.62); transform:translateY(-3px) scale(1.03); } }
 @keyframes snackResultHit { 0% { opacity:0; transform:translate(-50%,-50%) scale(1.8) rotate(-8deg); filter:blur(8px); } 68% { opacity:1; transform:translate(-50%,-50%) scale(.94) rotate(2deg); filter:none; } 82% { transform:translate(-50%,-50%) scale(1.04) rotate(-1deg); } 100% { opacity:1; transform:translate(-50%,-50%) scale(1); } }
 @keyframes snackRays { to { transform:rotate(360deg); } }

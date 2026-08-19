@@ -43,6 +43,7 @@ const lunchChanceClose = document.querySelector('#lunchChanceClose');
 const snackChance = document.querySelector('#snackChance');
 const snackChanceCaption = document.querySelector('#snackChanceCaption');
 const snackDestinyDie = document.querySelector('#snackDestinyDie');
+const snackDiceCube = document.querySelector('#snackDiceCube');
 const snackDiceRoll = document.querySelector('#snackDiceRoll');
 const snackDiceResult = document.querySelector('#snackDiceResult');
 const snackDiceResultNumber = document.querySelector('#snackDiceResultNumber');
@@ -206,9 +207,11 @@ let lunchChancePending = false;
 let lunchMenuAssignments = {};
 let armedLunchEnvelope = null;
 let snackChanceTimers = [];
-let snackDiceTicker = null;
 let snackChancePlayed = false;
 let snackDiceRolled = false;
+let snackDiceLastNumber = 3;
+let snackDiceLastXRotation = 0;
+let snackDiceLastYRotation = 0;
 let savedMissionKeys = JSON.parse(localStorage.getItem('totogun-completed-missions') || '[]');
 if (!localStorage.getItem('totogun-telepathy-reset-v1')) {
   savedMissionKeys = savedMissionKeys.filter((key) => key !== 'telepathy');
@@ -701,8 +704,6 @@ lunchChanceClose?.addEventListener('click', closeLunchChance);
 function clearSnackChanceRuntime() {
   snackChanceTimers.forEach((timer) => window.clearTimeout(timer));
   snackChanceTimers = [];
-  window.clearInterval(snackDiceTicker);
-  snackDiceTicker = null;
 }
 
 function setSnackChanceCaption(text) {
@@ -734,10 +735,51 @@ function setSnackChanceScene(scene) {
   });
 }
 
-function setSnackDiceFace(face) {
-  if (!snackDestinyDie) return;
-  snackDestinyDie.dataset.face = String(face);
-  snackDestinyDie.setAttribute('aria-label', `윗면 숫자 ${face}`);
+function snackDiceRandom(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function resetSnackDice() {
+  if (!snackDestinyDie || !snackDiceCube) return;
+  snackDiceLastNumber = 3;
+  snackDiceLastXRotation = 0;
+  snackDiceLastYRotation = 0;
+  snackDestinyDie.dataset.result = '3';
+  snackDestinyDie.setAttribute('aria-label', '주사위 숫자 3');
+  snackDiceCube.style.transition = 'none';
+  snackDiceCube.style.transform = 'translate(-50%, -50%) translateZ(calc(var(--dice-half) * -1)) rotateX(0deg) rotateY(0deg)';
+  void snackDiceCube.offsetWidth;
+  snackDiceCube.style.removeProperty('transition');
+}
+
+// Rotation strategy adapted from ThomasGRBT/dice-roll (GPL-3.0).
+// Each result adds several complete, randomly directed turns before its face settles forward.
+function getSnackDiceRollTransform(result) {
+  const xDirection = snackDiceRandom(0, 1) ? 1 : -1;
+  const yDirection = snackDiceRandom(0, 1) ? 1 : -1;
+  let xRotation = snackDiceLastXRotation + xDirection * snackDiceRandom(2, 4) * 360;
+  let yRotation = snackDiceLastYRotation + yDirection * snackDiceRandom(2, 4) * 360;
+
+  const faceRotations = {
+    1: [90, 0],
+    2: [0, -90],
+    3: [0, 0],
+    4: [0, 180],
+    5: [0, 90],
+    6: [-90, 0],
+  };
+  const [faceX, faceY] = faceRotations[result];
+  xRotation += faceX;
+  yRotation += faceY;
+
+  if (result === snackDiceLastNumber) {
+    xRotation += xDirection * 360;
+  }
+
+  snackDiceLastNumber = result;
+  snackDiceLastXRotation = xRotation;
+  snackDiceLastYRotation = yRotation;
+  return `translate(-50%, -50%) translateZ(calc(var(--dice-half) * -1)) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
 }
 
 function startSnackChance() {
@@ -745,7 +787,7 @@ function startSnackChance() {
   clearSnackChanceRuntime();
   snackChancePlayed = true;
   snackDiceRolled = false;
-  setSnackDiceFace(1);
+  resetSnackDice();
   snackDiceRoll.disabled = true;
   snackDiceResult.hidden = true;
   setSnackChanceCaption('잠시 후 간식 타임이 시작됩니다.');
@@ -778,7 +820,8 @@ function startSnackChance() {
 }
 
 function revealSnackDiceResult(result) {
-  setSnackDiceFace(result);
+  snackDestinyDie.dataset.result = String(result);
+  snackDestinyDie.setAttribute('aria-label', `주사위 숫자 ${result}`);
   snackDiceResultNumber.textContent = String(result);
   snackDiceResultCount.textContent = `${result}개`;
   setSnackChanceCaption(`${result}이 나왔습니다! 오늘의 디저트는 ${result}개입니다!`);
@@ -795,20 +838,15 @@ function rollSnackDice() {
   snackDiceRoll.disabled = true;
   setSnackChanceScene('rolling');
   setSnackChanceCaption('운명의 주사위가 굴러갑니다!');
-  let previousFace = Number(snackDestinyDie.dataset.face) || 1;
-  snackDiceTicker = window.setInterval(() => {
-    let nextFace = 1 + Math.floor(Math.random() * 6);
-    if (nextFace === previousFace) nextFace = (nextFace % 6) + 1;
-    previousFace = nextFace;
-    setSnackDiceFace(nextFace);
-  }, 105);
-  const result = 1 + Math.floor(Math.random() * 6);
+  const result = snackDiceRandom(1, 6);
+  const targetTransform = getSnackDiceRollTransform(result);
+  requestAnimationFrame(() => {
+    snackDiceCube.style.transform = targetTransform;
+  });
   snackChanceTimers.push(window.setTimeout(() => {
-    window.clearInterval(snackDiceTicker);
-    snackDiceTicker = null;
     setSnackChanceScene('dice');
     revealSnackDiceResult(result);
-  }, 2150));
+  }, 2300));
 }
 
 function closeSnackChance() {
