@@ -1205,14 +1205,14 @@ caseInspect.addEventListener('click', () => {
   if (briefcase.classList.contains('turning') || briefcase.classList.contains('inspecting')) return;
   briefcase.classList.add('turning');
   caseCaption.textContent = '먼저 잠긴 작전 가방을 열겠습니다.';
-  caseGameCaption.textContent = '검은 가방이 천천히 옆으로 회전하고 있다…';
+  caseGameCaption.textContent = '서 있던 검은 가방이 천천히 앞으로 눕혀지고 있다…';
   caseMotionTimer = window.setTimeout(() => {
     briefcase.classList.remove('turning');
     briefcase.classList.add('inspecting');
     caseCaption.textContent = '비밀번호를 풀면 오늘의 작전이 공개됩니다.';
     caseGameCaption.textContent = '가방이 멈췄다. 비밀번호 007을 입력하자!';
     comboWheels[0]?.focus();
-  }, 1450);
+  }, 2100);
 });
 
 comboWheels.forEach((wheel) => {
