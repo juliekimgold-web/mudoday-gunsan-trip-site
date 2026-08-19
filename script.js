@@ -440,7 +440,7 @@ function setupTelepathyGame(contentKey) {
       reaction.classList.remove('is-active');
       gameBeat.classList.remove('is-reacting');
       onDone?.();
-    }, kind === 'success' ? 2800 : 2300);
+    }, kind === 'success' ? 3300 : 3200);
   }
 
   function answersAreClose() {
@@ -464,7 +464,7 @@ function setupTelepathyGame(contentKey) {
       map.classList.remove('is-pindrop-loading');
       void map.offsetWidth;
       map.classList.add('is-pindrop-loading');
-    }, 1450);
+    }, 1800);
   }
 
   function resetMarkers() {
