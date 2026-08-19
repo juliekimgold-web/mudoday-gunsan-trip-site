@@ -29,6 +29,17 @@ const missionCloseButtons = [...document.querySelectorAll('[data-mission-close]'
 const missionStampFeedback = document.querySelector('#missionStampFeedback');
 const missionStampImage = document.querySelector('#missionStampImage');
 const missionStampText = document.querySelector('#missionStampText');
+const lunchChance = document.querySelector('#lunchChance');
+const lunchChanceCaption = document.querySelector('#lunchChanceCaption');
+const lunchChoiceHelp = document.querySelector('#lunchChoiceHelp');
+const lunchEnvelopes = [...document.querySelectorAll('[data-lunch-envelope]')];
+const lunchMenuReveal = document.querySelector('#lunchMenuReveal');
+const lunchSelectedEnvelope = document.querySelector('#lunchSelectedEnvelope');
+const lunchMainIcon = document.querySelector('#lunchMainIcon');
+const lunchSideIcon = document.querySelector('#lunchSideIcon');
+const lunchMainName = document.querySelector('#lunchMainName');
+const lunchSideName = document.querySelector('#lunchSideName');
+const lunchChanceClose = document.querySelector('#lunchChanceClose');
 
 const missionContents = {
   princess: {
@@ -162,6 +173,10 @@ let hometownStoryTimers = [];
 let partnerStoryTimers = [];
 let telepathyStoryTimers = [];
 let nostalgiaStoryTimers = [];
+let lunchChanceTimers = [];
+let lunchChancePending = false;
+let lunchMenuAssignments = {};
+let armedLunchEnvelope = null;
 let savedMissionKeys = JSON.parse(localStorage.getItem('totogun-completed-missions') || '[]');
 if (!localStorage.getItem('totogun-telepathy-reset-v1')) {
   savedMissionKeys = savedMissionKeys.filter((key) => key !== 'telepathy');
@@ -428,7 +443,151 @@ function setupTelepathyGame(contentKey) {
   resetRound();
 }
 
+const lunchMains = {
+  water: { name: '물짜장', dish: 'water-jjajang' },
+  jjampong: { name: '짬뽕', dish: 'jjampong' },
+};
+
+const lunchSides = [
+  { name: '탕수육', dish: 'tangsuyuk' },
+  { name: '적춘권', dish: 'spring-roll' },
+];
+
+function clearLunchChanceRuntime() {
+  lunchChanceTimers.forEach((timer) => window.clearTimeout(timer));
+  lunchChanceTimers = [];
+}
+
+function setLunchChanceCaption(text) {
+  if (!lunchChanceCaption) return;
+  const caption = lunchChanceCaption.closest('.lunch-pd-caption');
+  caption?.classList.remove('is-changing');
+  lunchChanceCaption.textContent = text;
+  void lunchChanceCaption.offsetWidth;
+  caption?.classList.add('is-changing');
+}
+
+function setLunchChanceScene(scene) {
+  if (!lunchChance) return;
+  lunchChance.dataset.scene = scene;
+  lunchChance.querySelectorAll('[data-lunch-panel]').forEach((panel) => {
+    const panelName = panel.dataset.lunchPanel;
+    const isVisible = panelName === scene
+      || (panelName === 'envelopes' && (scene === 'envelopes' || scene === 'choose'));
+    panel.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+  });
+}
+
+function createLunchMenuAssignments() {
+  const mainOrder = Math.random() < .5 ? ['water', 'jjampong'] : ['jjampong', 'water'];
+  const randomSide = () => lunchSides[Math.floor(Math.random() * lunchSides.length)];
+  lunchMenuAssignments = {
+    A: { main: lunchMains[mainOrder[0]], side: randomSide() },
+    B: { main: lunchMains[mainOrder[1]], side: randomSide() },
+  };
+}
+
+function startLunchChance() {
+  if (!lunchChance) return;
+  clearLunchChanceRuntime();
+  createLunchMenuAssignments();
+  armedLunchEnvelope = null;
+  lunchEnvelopes.forEach((envelope) => {
+    envelope.disabled = true;
+    envelope.classList.remove('is-armed', 'is-selected', 'is-rejected');
+    envelope.removeAttribute('aria-pressed');
+  });
+  lunchMenuReveal.classList.remove('is-revealed');
+  lunchMenuReveal.hidden = true;
+  lunchChoiceHelp.textContent = '두 봉투 중 하나를 골라주세요.';
+  setLunchChanceCaption('잠시 후 점심 찬스타임이 시작됩니다.');
+  setLunchChanceScene('logo');
+  lunchChance.hidden = false;
+  lunchChance.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('lunch-chance-open');
+  requestAnimationFrame(() => lunchChance.classList.add('is-active'));
+
+  lunchChanceTimers.push(window.setTimeout(() => {
+    setLunchChanceScene('restaurant');
+    setLunchChanceCaption('자 여러분 이제 점심 먹어야죠?');
+  }, 2400));
+  lunchChanceTimers.push(window.setTimeout(() => {
+    setLunchChanceCaption('오늘의 메뉴는 중식입니다');
+  }, 4700));
+  lunchChanceTimers.push(window.setTimeout(() => {
+    setLunchChanceScene('envelopes');
+    setLunchChanceCaption('두개의 봉투가 있는데...');
+  }, 7000));
+  lunchChanceTimers.push(window.setTimeout(() => {
+    setLunchChanceScene('choose');
+    setLunchChanceCaption('고르신 봉투 안의 메뉴로 먹어야 합니다!');
+    lunchEnvelopes.forEach((envelope) => { envelope.disabled = false; });
+    lunchEnvelopes[0]?.focus({ preventScroll: true });
+  }, 9300));
+}
+
+function revealLunchMenu(envelopeKey) {
+  if (lunchChance?.dataset.scene !== 'choose') return;
+  const menu = lunchMenuAssignments[envelopeKey];
+  if (!menu) return;
+  lunchEnvelopes.forEach((envelope) => {
+    const isSelected = envelope.dataset.lunchEnvelope === envelopeKey;
+    envelope.disabled = true;
+    envelope.classList.toggle('is-selected', isSelected);
+    envelope.classList.toggle('is-rejected', !isSelected);
+    envelope.classList.remove('is-armed');
+    envelope.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+  });
+  lunchSelectedEnvelope.textContent = envelopeKey;
+  lunchMainName.textContent = menu.main.name;
+  lunchSideName.textContent = menu.side.name;
+  lunchMainIcon.dataset.dish = menu.main.dish;
+  lunchSideIcon.dataset.dish = menu.side.dish;
+  lunchChoiceHelp.textContent = `${envelopeKey} 봉투를 선택했습니다.`;
+  lunchChanceTimers.push(window.setTimeout(() => {
+    setLunchChanceScene('reveal');
+    lunchMenuReveal.hidden = false;
+    requestAnimationFrame(() => {
+      lunchMenuReveal.classList.add('is-revealed');
+      lunchChanceClose?.focus({ preventScroll: true });
+    });
+  }, 620));
+}
+
+function closeLunchChance() {
+  if (!lunchChance || lunchChance.hidden) return;
+  clearLunchChanceRuntime();
+  lunchChance.classList.remove('is-active');
+  document.body.classList.remove('lunch-chance-open');
+  window.setTimeout(() => {
+    lunchChance.hidden = true;
+    lunchChance.setAttribute('aria-hidden', 'true');
+    lunchChance.removeAttribute('data-scene');
+    lunchMenuReveal.classList.remove('is-revealed');
+    lunchMenuReveal.hidden = true;
+    document.querySelector('.case-prop[data-content="telepathy"]')?.focus({ preventScroll: true });
+  }, 480);
+}
+
+lunchEnvelopes.forEach((envelope) => {
+  envelope.addEventListener('click', (event) => {
+    if (envelope.disabled || lunchChance?.dataset.scene !== 'choose') return;
+    const envelopeKey = envelope.dataset.lunchEnvelope;
+    const needsTwoTaps = window.matchMedia('(hover: none), (pointer: coarse)').matches && event.detail !== 0;
+    if (needsTwoTaps && armedLunchEnvelope !== envelopeKey) {
+      armedLunchEnvelope = envelopeKey;
+      lunchEnvelopes.forEach((item) => item.classList.toggle('is-armed', item === envelope));
+      lunchChoiceHelp.textContent = `${envelopeKey} 봉투를 한 번 더 탭하면 선택됩니다.`;
+      return;
+    }
+    revealLunchMenu(envelopeKey);
+  });
+});
+
+lunchChanceClose?.addEventListener('click', closeLunchChance);
+
 function completeMissionWithPhoto(contentKey) {
+  if (contentKey === 'telepathy') lunchChancePending = true;
   completedMissions.add(contentKey);
   localStorage.setItem('totogun-completed-missions', JSON.stringify([...completedMissions]));
   updateMissionBadges();
@@ -882,6 +1041,10 @@ function openMission(contentKey, trigger) {
 }
 
 function finishMissionClose() {
+  const shouldStartLunchChance = lunchChancePending
+    && activeMissionKey === 'telepathy'
+    && completedMissions.has('telepathy');
+  if (shouldStartLunchChance) lunchChancePending = false;
   window.clearTimeout(missionIntroTimer);
   clearPrincessRuntime();
   clearCommaRuntime();
@@ -900,6 +1063,9 @@ function finishMissionClose() {
     activeMissionKey = null;
     missionClosing = false;
     hideMissionStamp();
+    if (shouldStartLunchChance) {
+      window.setTimeout(startLunchChance, 320);
+    }
   }, 220);
 }
 
@@ -1116,7 +1282,12 @@ casePeek.addEventListener('click', () => {
 
 missionCloseButtons.forEach((button) => button.addEventListener('click', closeMission));
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !missionModal.hidden) closeMission();
+  if (event.key !== 'Escape') return;
+  if (!missionModal.hidden) {
+    closeMission();
+    return;
+  }
+  if (!lunchChance?.hidden && lunchMenuReveal?.classList.contains('is-revealed')) closeLunchChance();
 });
 
 caseReturn.addEventListener('click', () => showCase(true));

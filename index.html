@@ -9,7 +9,7 @@
       name="description"
       content="2026년 8월 22일, 오래된 친구와 군산에서 다시 쓰는 하루"
     />
-  <link rel="stylesheet" href="styles.css?v=20260818-67" />
+  <link rel="stylesheet" href="styles.css?v=20260819-01" />
   </head>
   <body class="intro-open">
     <div class="noise" aria-hidden="true"></div>
@@ -43,7 +43,7 @@
 
     <section class="case-gate" id="caseGate" aria-hidden="true" aria-label="007 여행 가방">
       <div class="case-stage">
-        <div class="case-caption" aria-live="polite">
+        <div class="case-caption pd-directive" aria-live="polite">
           <span>PD</span>
           <strong id="caseCaption">가방부터 한번 눕혀보세요.</strong>
         </div>
@@ -150,6 +150,56 @@
         <img id="missionStampImage" alt="" />
         <strong id="missionStampText"></strong>
       </div>
+    </div>
+
+    <div class="lunch-chance" id="lunchChance" hidden aria-hidden="true">
+      <div class="lunch-chance-scrim" aria-hidden="true"></div>
+      <section class="lunch-chance-stage" role="dialog" aria-modal="true" aria-labelledby="lunchChanceCaption">
+        <div class="lunch-chance-logo" data-lunch-panel="logo" aria-hidden="true">
+          <span class="chance-light chance-light-one"></span>
+          <span class="chance-light chance-light-two"></span>
+          <img src="assets/generated/chance-lunch/yes-no-chance.png?v=1" alt="무한도전 인생극장 Yes or No" />
+        </div>
+
+        <div class="lunch-restaurant" data-lunch-panel="restaurant" aria-hidden="true">
+          <span class="restaurant-rays"></span>
+          <img src="assets/generated/chance-lunch/binhaewon-sign.png?v=1" alt="군산 빈해원 붉은 간판" />
+          <strong>오늘의 점심 장소</strong>
+        </div>
+
+        <div class="lunch-pd-caption pd-directive" aria-live="assertive">
+          <span>PD</span>
+          <strong id="lunchChanceCaption">잠시 후 점심 찬스타임이 시작됩니다.</strong>
+        </div>
+
+        <div class="lunch-envelope-scene" data-lunch-panel="envelopes" aria-hidden="true">
+          <p class="lunch-choice-help" id="lunchChoiceHelp">두 봉투 중 하나를 골라주세요.</p>
+          <div class="lunch-envelope-options">
+            <button class="lunch-envelope" type="button" data-lunch-envelope="A" aria-describedby="lunchChoiceHelp" disabled>
+              <img src="assets/generated/chance-lunch/red-envelope.png?v=1" alt="A 선택 봉투" />
+              <span class="lunch-envelope-badge">A</span>
+              <small>봉투 A</small>
+            </button>
+            <button class="lunch-envelope" type="button" data-lunch-envelope="B" aria-describedby="lunchChoiceHelp" disabled>
+              <img src="assets/generated/chance-lunch/red-envelope.png?v=1" alt="B 선택 봉투" />
+              <span class="lunch-envelope-badge">B</span>
+              <small>봉투 B</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="lunch-menu-reveal" id="lunchMenuReveal" hidden aria-live="polite">
+          <p class="menu-reveal-kicker"><span id="lunchSelectedEnvelope">A</span> 봉투 선택!</p>
+          <div class="lunch-menu-dishes" aria-hidden="true">
+            <span class="lunch-dish-icon" id="lunchMainIcon"></span>
+            <b>+</b>
+            <span class="lunch-dish-icon" id="lunchSideIcon"></span>
+          </div>
+          <h2><span id="lunchMainName">물짜장</span> <b>+</b> <span id="lunchSideName">탕수육</span></h2>
+          <p>고른 봉투 속 메뉴로 오늘의 점심을 즐겨주세요.</p>
+          <button class="lunch-chance-close" id="lunchChanceClose" type="button">메뉴 확인 완료</button>
+        </div>
+      </section>
     </div>
 
     <section class="route-transition" id="routeTransition" aria-hidden="true" aria-label="군산행 전환 화면">
@@ -617,6 +667,6 @@
       <small>개인적인 비공개 여행 기록용 콘셉트 초안</small>
     </footer>
 
-  <script src="script.js?v=20260818-26"></script>
+  <script src="script.js?v=20260819-01"></script>
   </body>
 </html>
