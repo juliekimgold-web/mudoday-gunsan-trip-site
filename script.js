@@ -40,6 +40,14 @@ const lunchSideIcon = document.querySelector('#lunchSideIcon');
 const lunchMainName = document.querySelector('#lunchMainName');
 const lunchSideName = document.querySelector('#lunchSideName');
 const lunchChanceClose = document.querySelector('#lunchChanceClose');
+const snackChance = document.querySelector('#snackChance');
+const snackChanceCaption = document.querySelector('#snackChanceCaption');
+const snackDestinyDie = document.querySelector('#snackDestinyDie');
+const snackDiceRoll = document.querySelector('#snackDiceRoll');
+const snackDiceResult = document.querySelector('#snackDiceResult');
+const snackDiceResultNumber = document.querySelector('#snackDiceResultNumber');
+const snackDiceResultCount = document.querySelector('#snackDiceResultCount');
+const snackChanceClose = document.querySelector('#snackChanceClose');
 
 const missionContents = {
   princess: {
@@ -197,6 +205,10 @@ let lunchChanceTimers = [];
 let lunchChancePending = false;
 let lunchMenuAssignments = {};
 let armedLunchEnvelope = null;
+let snackChanceTimers = [];
+let snackDiceTicker = null;
+let snackChancePlayed = false;
+let snackDiceRolled = false;
 let savedMissionKeys = JSON.parse(localStorage.getItem('totogun-completed-missions') || '[]');
 if (!localStorage.getItem('totogun-telepathy-reset-v1')) {
   savedMissionKeys = savedMissionKeys.filter((key) => key !== 'telepathy');
@@ -685,6 +697,136 @@ lunchEnvelopes.forEach((envelope) => {
 });
 
 lunchChanceClose?.addEventListener('click', closeLunchChance);
+
+function clearSnackChanceRuntime() {
+  snackChanceTimers.forEach((timer) => window.clearTimeout(timer));
+  snackChanceTimers = [];
+  window.clearInterval(snackDiceTicker);
+  snackDiceTicker = null;
+}
+
+function setSnackChanceCaption(text) {
+  if (!snackChanceCaption) return;
+  const caption = snackChanceCaption.closest('.snack-pd-caption');
+  caption?.classList.remove('is-changing');
+  snackChanceCaption.textContent = text;
+  void snackChanceCaption.offsetWidth;
+  caption?.classList.add('is-changing');
+}
+
+function setSnackChanceScene(scene) {
+  if (!snackChance) return;
+  snackChance.dataset.scene = scene;
+  const visiblePanels = {
+    logo: ['logo'],
+    intro: ['logo'],
+    tease: ['logo'],
+    treats: ['treats'],
+    'dessert-rule': ['treats'],
+    dice: ['dice'],
+    ready: ['dice'],
+    rolling: ['dice'],
+    result: ['result'],
+  };
+  snackChance.querySelectorAll('[data-snack-panel]').forEach((panel) => {
+    const isVisible = visiblePanels[scene]?.includes(panel.dataset.snackPanel) ?? false;
+    panel.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+  });
+}
+
+function setSnackDiceFace(face) {
+  if (!snackDestinyDie) return;
+  snackDestinyDie.dataset.face = String(face);
+  snackDestinyDie.setAttribute('aria-label', `윗면 숫자 ${face}`);
+}
+
+function startSnackChance() {
+  if (!snackChance || !snackChance.hidden) return;
+  clearSnackChanceRuntime();
+  snackChancePlayed = true;
+  snackDiceRolled = false;
+  setSnackDiceFace(1);
+  snackDiceRoll.disabled = true;
+  snackDiceResult.hidden = true;
+  setSnackChanceCaption('잠시 후 간식 타임이 시작됩니다.');
+  setSnackChanceScene('logo');
+  snackChance.hidden = false;
+  snackChance.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('snack-chance-open');
+  requestAnimationFrame(() => snackChance.classList.add('is-active'));
+
+  const cue = (delay, scene, caption, callback) => {
+    snackChanceTimers.push(window.setTimeout(() => {
+      if (scene) setSnackChanceScene(scene);
+      if (caption) setSnackChanceCaption(caption);
+      callback?.();
+    }, delay));
+  };
+
+  cue(2200, 'intro', '여러분 이제 간식을 먹어야겠죠?');
+  cue(4300, 'tease', '오늘의 간식은 바로 ....');
+  cue(6500, 'treats', '군산과자조합의 대표 간식, 밀크티와 계란찜과자입니다!');
+  cue(9200, 'dessert-rule', '하지만 마음껏 디저트를 즐기면 재미없죠.');
+  cue(11800, 'dice', '오늘 먹을 디저트의 개수는 이 운명의 주사위가 정합니다!');
+  cue(14800, 'dice', '숫자 6이 나오면 배가 불러도 6개를 먹어야 하고요, 숫자 1이 나오면 아쉬워도 1개로 만족하셔야 합니다!');
+  cue(18200, 'dice', '자 이제 주사위를 굴려볼까요?');
+  cue(20400, 'dice', '기회는 단 한 번입니다!');
+  cue(21800, 'ready', null, () => {
+    snackDiceRoll.disabled = false;
+    snackDiceRoll.focus({ preventScroll: true });
+  });
+}
+
+function revealSnackDiceResult(result) {
+  setSnackDiceFace(result);
+  snackDiceResultNumber.textContent = String(result);
+  snackDiceResultCount.textContent = `${result}개`;
+  setSnackChanceCaption(`${result}이 나왔습니다! 오늘의 디저트는 ${result}개입니다!`);
+  snackChanceTimers.push(window.setTimeout(() => {
+    snackDiceResult.hidden = false;
+    setSnackChanceScene('result');
+    snackChanceClose?.focus({ preventScroll: true });
+  }, 1250));
+}
+
+function rollSnackDice() {
+  if (snackDiceRolled || snackChance?.dataset.scene !== 'ready') return;
+  snackDiceRolled = true;
+  snackDiceRoll.disabled = true;
+  setSnackChanceScene('rolling');
+  setSnackChanceCaption('운명의 주사위가 굴러갑니다!');
+  let previousFace = Number(snackDestinyDie.dataset.face) || 1;
+  snackDiceTicker = window.setInterval(() => {
+    let nextFace = 1 + Math.floor(Math.random() * 6);
+    if (nextFace === previousFace) nextFace = (nextFace % 6) + 1;
+    previousFace = nextFace;
+    setSnackDiceFace(nextFace);
+  }, 105);
+  const result = 1 + Math.floor(Math.random() * 6);
+  snackChanceTimers.push(window.setTimeout(() => {
+    window.clearInterval(snackDiceTicker);
+    snackDiceTicker = null;
+    setSnackChanceScene('dice');
+    revealSnackDiceResult(result);
+  }, 2150));
+}
+
+function closeSnackChance() {
+  if (!snackChance || snackChance.hidden) return;
+  clearSnackChanceRuntime();
+  snackChance.classList.remove('is-active');
+  document.body.classList.remove('snack-chance-open');
+  window.setTimeout(() => {
+    snackChance.hidden = true;
+    snackChance.setAttribute('aria-hidden', 'true');
+    snackChance.removeAttribute('data-scene');
+    snackDiceResult.hidden = true;
+    document.querySelector('.stage[data-stage="7"] .stage-toggle')?.focus({ preventScroll: true });
+  }, 480);
+}
+
+snackDiceRoll?.addEventListener('click', rollSnackDice);
+snackChanceClose?.addEventListener('click', closeSnackChance);
 
 function completeMissionWithPhoto(contentKey) {
   if (contentKey === 'telepathy') lunchChancePending = true;
@@ -1424,6 +1566,7 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   if (!lunchChance?.hidden && lunchMenuReveal?.classList.contains('is-revealed')) closeLunchChance();
+  if (!snackChance?.hidden && snackChance?.dataset.scene === 'result') closeSnackChance();
 });
 
 caseReturn.addEventListener('click', () => showCase(true));
@@ -1434,6 +1577,9 @@ if (previewParams.get('preview') === 'lunch') {
     showCase(true);
     window.setTimeout(startLunchChance, 520);
   }, 180);
+}
+if (previewParams.get('preview') === 'snack') {
+  window.setTimeout(startSnackChance, 260);
 }
 
 function updateCountdown() {
@@ -1503,7 +1649,13 @@ document.querySelectorAll('.stage-toggle').forEach((button) => {
     const isOpen = stage.classList.toggle('open');
     button.setAttribute('aria-expanded', String(isOpen));
     requestAnimationFrame(updateTimelineStack);
-    if (isOpen) showCaption();
+    if (isOpen) {
+      showCaption();
+      if (stage.dataset.stage === '7' && !snackChancePlayed) {
+        snackChancePlayed = true;
+        window.setTimeout(startSnackChance, 360);
+      }
+    }
   });
 });
 

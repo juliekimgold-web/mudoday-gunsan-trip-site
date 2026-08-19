@@ -9,7 +9,7 @@
       name="description"
       content="2026년 8월 22일, 오래된 친구와 군산에서 다시 쓰는 하루"
     />
-  <link rel="stylesheet" href="styles.css?v=20260819-11" />
+  <link rel="stylesheet" href="styles.css?v=20260819-12" />
   </head>
   <body class="intro-open">
     <div class="noise" aria-hidden="true"></div>
@@ -202,6 +202,61 @@
           <h2><span id="lunchMainName">물짜장</span> <b>+</b> <span id="lunchSideName">탕수육</span></h2>
           <p>고른 봉투 속 메뉴로 오늘의 점심을 즐겨주세요.</p>
           <button class="lunch-chance-close" id="lunchChanceClose" type="button">메뉴 확인 완료</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="snack-chance" id="snackChance" hidden aria-hidden="true">
+      <div class="snack-chance-scrim" aria-hidden="true"></div>
+      <section class="snack-chance-stage" role="dialog" aria-modal="true" aria-labelledby="snackChanceCaption">
+        <div class="snack-logo-scene" data-snack-panel="logo" aria-hidden="true">
+          <span class="snack-logo-burst" aria-hidden="true"></span>
+          <img src="assets/generated/chance-snack/gunsan-cookie-logo.webp?v=1" alt="군산과자조합 간판" />
+          <strong>군산과자조합</strong>
+          <small>GUNSAN DESSERT TIME</small>
+        </div>
+
+        <div class="snack-treat-scene" data-snack-panel="treats" aria-hidden="true">
+          <span class="snack-treat-rays" aria-hidden="true"></span>
+          <div class="snack-treat-set">
+            <figure class="snack-treat milk-tea-treat">
+              <img src="assets/generated/chance-snack/milk-tea-cutout.png?v=1" alt="두 병의 밀크티와 얼음잔 일러스트" />
+            </figure>
+            <figure class="snack-treat custard-treat">
+              <img src="assets/generated/chance-snack/egg-custard-cutout.png?v=1" alt="계란찜과자와 단면 일러스트" />
+            </figure>
+          </div>
+        </div>
+
+        <div class="snack-dice-scene" data-snack-panel="dice" aria-hidden="true">
+          <div class="destiny-dice-title" aria-label="운명의 주사위">
+            <span>운명의</span>
+            <strong>주사위</strong>
+          </div>
+          <div class="destiny-die" id="snackDestinyDie" data-face="1" aria-label="윗면 숫자 1">
+            <div class="destiny-die-shell">
+              <div class="destiny-die-top" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="destiny-die-side side-left" aria-hidden="true"></div>
+              <div class="destiny-die-side side-right" aria-hidden="true"></div>
+            </div>
+          </div>
+          <button class="snack-dice-roll" id="snackDiceRoll" type="button" disabled>주사위 굴리기</button>
+          <small class="snack-dice-note">단 한 번의 결과가 오늘 먹을 개수입니다.</small>
+        </div>
+
+        <div class="lunch-pd-caption snack-pd-caption pd-directive" aria-live="assertive">
+          <span>PD</span>
+          <strong id="snackChanceCaption">잠시 후 간식 타임이 시작됩니다.</strong>
+        </div>
+
+        <div class="snack-dice-result" id="snackDiceResult" data-snack-panel="result" hidden aria-live="assertive">
+          <p>운명의 주사위 결과</p>
+          <strong id="snackDiceResultNumber">1</strong>
+          <h2>오늘의 디저트는 <b id="snackDiceResultCount">1개</b>!</h2>
+          <span>윗면에 나온 숫자만큼 맛있게 즐겨주세요.</span>
+          <button id="snackChanceClose" type="button">결과 확인 완료</button>
         </div>
       </section>
     </div>
@@ -671,6 +726,6 @@
       <small>개인적인 비공개 여행 기록용 콘셉트 초안</small>
     </footer>
 
-  <script src="script.js?v=20260819-11"></script>
+  <script src="script.js?v=20260819-12"></script>
   </body>
 </html>
