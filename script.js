@@ -158,6 +158,26 @@ const missionContents = {
   },
 };
 
+const telepathyDistricts = {
+  서울:['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'],
+  부산:['강서구','금정구','기장군','남구','동구','동래구','부산진구','북구','사상구','사하구','서구','수영구','연제구','영도구','중구','해운대구'],
+  대구:['군위군','남구','달서구','달성군','동구','북구','서구','수성구','중구'],
+  인천:['강화군','계양구','남동구','동구','미추홀구','부평구','서구','연수구','옹진군','중구'],
+  광주:['광산구','남구','동구','북구','서구'],
+  대전:['대덕구','동구','서구','유성구','중구'],
+  울산:['남구','동구','북구','울주군','중구'],
+  세종:['세종시 전역'],
+  경기:['가평군','고양시','과천시','광명시','광주시','구리시','군포시','김포시','남양주시','동두천시','부천시','성남시','수원시','시흥시','안산시','안성시','안양시','양주시','양평군','여주시','연천군','오산시','용인시','의왕시','의정부시','이천시','파주시','평택시','포천시','하남시','화성시'],
+  강원:['강릉시','고성군','동해시','삼척시','속초시','양구군','양양군','영월군','원주시','인제군','정선군','철원군','춘천시','태백시','평창군','홍천군','화천군','횡성군'],
+  충북:['괴산군','단양군','보은군','영동군','옥천군','음성군','제천시','증평군','진천군','청주시','충주시'],
+  충남:['계룡시','공주시','금산군','논산시','당진시','보령시','부여군','서산시','서천군','아산시','예산군','천안시','청양군','태안군','홍성군'],
+  전북:['고창군','군산시','김제시','남원시','무주군','부안군','순창군','완주군','익산시','임실군','장수군','전주시','정읍시','진안군'],
+  전남:['강진군','고흥군','곡성군','광양시','구례군','나주시','담양군','목포시','무안군','보성군','순천시','신안군','여수시','영광군','영암군','완도군','장성군','장흥군','진도군','함평군','해남군','화순군'],
+  경북:['경산시','경주시','고령군','구미시','김천시','문경시','봉화군','상주시','성주군','안동시','영덕군','영양군','영주시','영천시','예천군','울릉군','울진군','의성군','청도군','청송군','칠곡군','포항시'],
+  경남:['거제시','거창군','고성군','김해시','남해군','밀양시','사천시','산청군','양산시','의령군','진주시','창녕군','창원시','통영시','하동군','함안군','함양군','합천군'],
+  제주:['서귀포시','제주시'],
+};
+
 let missionReturnFocus = null;
 let missionIntroTimer = null;
 let activeMissionKey = null;
@@ -364,6 +384,7 @@ function activateTelepathyBeat(index) {
     beat.setAttribute('aria-hidden', beatIndex === index ? 'false' : 'true');
   });
   missionModal.querySelectorAll('[data-telepathy-dot]').forEach((dot, dotIndex) => dot.classList.toggle('is-active', dotIndex === index));
+  if (index === 3) missionModal.querySelector('[data-telepathy-game]')?.dispatchEvent(new CustomEvent('telepathy-round-start'));
 }
 
 function startTelepathyStory() {
@@ -387,13 +408,35 @@ function setupTelepathyGame(contentKey) {
   const status = game.querySelector('[data-telepathy-status]');
   const retry = game.querySelector('[data-telepathy-retry]');
   const markers = { y:game.querySelector('[data-player-marker="y"]'), j:game.querySelector('[data-player-marker="j"]') };
+  const gameBeat = game.closest('.telepathy-game-beat');
+  const roundCurtain = gameBeat.querySelector('[data-telepathy-round-curtain]');
+  let roundCurtainTimer = null;
+
+  function showRoundIntro() {
+    window.clearTimeout(roundCurtainTimer);
+    roundCurtain.querySelector('strong').textContent = round;
+    gameBeat.classList.add('is-round-intro');
+    roundCurtain.classList.remove('is-active');
+    void roundCurtain.offsetWidth;
+    roundCurtain.classList.add('is-active');
+    roundCurtainTimer = window.setTimeout(() => {
+      gameBeat.classList.remove('is-round-intro');
+      roundCurtain.classList.remove('is-active');
+    }, 1450);
+  }
 
   function resetMarkers() {
     Object.values(markers).forEach((marker) => { marker.style.left='50%'; marker.style.top='88%'; marker.classList.remove('is-arrived'); });
   }
   function resetRound() {
     answers = { y:null, j:null };
-    game.querySelectorAll('[data-player-form]').forEach((form) => { form.reset(); form.classList.remove('is-submitted'); form.querySelector('button').disabled=false; });
+    game.querySelectorAll('[data-player-form]').forEach((form) => {
+      form.reset();
+      form.classList.remove('is-submitted');
+      form.querySelector('button').disabled=false;
+      form.elements.district.innerHTML='<option value="">세부 도시·구</option>';
+      form.elements.district.disabled=true;
+    });
     roundEl.textContent = `ROUND ${round} / 5`;
     status.textContent = '같은 추억의 장소를 떠올려보세요.';
     resetMarkers();
@@ -409,7 +452,7 @@ function setupTelepathyGame(contentKey) {
     }
     used.add(answers.y.key);
     used.add(answers.j.key);
-    status.textContent = `Y는 ${answers.y.region}, J는 ${answers.j.region}! 텔레파시 불발…`;
+    status.textContent = `Y는 ${answers.y.region} ${answers.y.district}, J는 ${answers.j.region} ${answers.j.district}! 텔레파시 불발…`;
     if (round >= 5) {
       game.classList.add('is-failed');
       retry.hidden = false;
@@ -417,18 +460,26 @@ function setupTelepathyGame(contentKey) {
       return;
     }
     round += 1;
-    window.setTimeout(resetRound, 1800);
+    window.setTimeout(() => { resetRound(); showRoundIntro(); }, 1800);
   }
   game.querySelectorAll('[data-player-form]').forEach((form) => {
+    form.elements.region.addEventListener('change', () => {
+      const district = form.elements.district;
+      const options = telepathyDistricts[form.elements.region.value] || [];
+      district.innerHTML = `<option value="">세부 도시·구</option>${options.map((name) => `<option>${name}</option>`).join('')}`;
+      district.disabled = options.length === 0;
+      district.focus();
+    });
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const player = form.dataset.playerForm;
       const region = form.elements.region.value;
+      const district = form.elements.district.value;
       const place = form.elements.place.value.trim();
-      const key = `${region}|${place.replace(/\s+/g,'').toLowerCase()}`;
-      if (!region || !place) { status.textContent='지역명과 장소명을 모두 입력해주세요.'; return; }
+      const key = `${region}|${district}|${place.replace(/\s+/g,'').toLowerCase()}`;
+      if (!region || !district || !place) { status.textContent='시·도, 세부 도시·구, 장소명을 모두 입력해주세요.'; return; }
       if (used.has(key)) { status.textContent='한 번 쓴 장소는 다시 사용할 수 없어요.'; return; }
-      answers[player] = { region, place, key };
+      answers[player] = { region, district, place, key };
       form.classList.add('is-submitted');
       form.querySelector('button').disabled = true;
       const [left, top] = coords[region] || [50,50];
@@ -439,7 +490,8 @@ function setupTelepathyGame(contentKey) {
       finishRound();
     });
   });
-  retry.addEventListener('click', () => { round=1; used.clear(); retry.hidden=true; game.classList.remove('is-failed'); resetRound(); });
+  game.addEventListener('telepathy-round-start', showRoundIntro);
+  retry.addEventListener('click', () => { round=1; used.clear(); retry.hidden=true; game.classList.remove('is-failed'); resetRound(); showRoundIntro(); });
   resetRound();
 }
 
@@ -848,15 +900,43 @@ function openMission(contentKey, trigger) {
         <article class="telepathy-story-beat telepathy-person is-two" data-telepathy-beat aria-hidden="true"><img src="assets/generated/telepathy/loud-telepathy-cutout.png?v=1" alt="두 귀를 막고 더 크게 전달되는 텔레파시를 느끼는 출연자와 원본 자막" /></article>
         <article class="telepathy-story-beat telepathy-title-beat" data-telepathy-beat aria-hidden="true"><img src="assets/generated/telepathy/title-cutout.png?v=1" alt="우리들의 보이지 않는 연결고리 텔레파시" /></article>
         <article class="telepathy-story-beat telepathy-game-beat" data-telepathy-beat aria-hidden="true">
+          <div class="telepathy-round-curtain" data-telepathy-round-curtain aria-live="polite" aria-atomic="true"><span>TELEPATHY GAME</span><b>ROUND</b><strong>1</strong><small>같은 추억 장소를 떠올려라!</small></div>
           <div class="telepathy-game" data-telepathy-game>
             <header><span data-telepathy-round>ROUND 1 / 5</span><h3>우리 둘의 추억 장소를 맞춰라!</h3><p data-telepathy-status>같은 추억의 장소를 떠올려보세요.</p></header>
             <div class="telepathy-playfield">
               <div class="telepathy-map" aria-label="대한민국 지도">
-                <svg viewBox="0 0 360 520" aria-hidden="true"><path d="M173 20l45 28 18 51 39 32-18 52 28 44-35 46 14 55-39 39-12 65-38 49-25-35-1-64-38-27 18-58-36-45 27-48-12-52 42-29 1-54 36-22z"/><ellipse cx="112" cy="492" rx="44" ry="17"/></svg>
-                <span class="telepathy-marker is-y" data-player-marker="y"><b>Y</b></span><span class="telepathy-marker is-j" data-player-marker="j"><b>J</b></span>
+                <span class="telepathy-map-kicker">대한민국 추억 지도</span>
+                <svg viewBox="0 0 360 520" role="img" aria-label="시도별 색상으로 구분된 대한민국 지도">
+                  <g class="telepathy-regions">
+                    <path class="region gyeonggi" d="M114 54 173 20 161 119 198 137 175 174 129 165 104 128 115 104Z" />
+                    <path class="region gangwon" d="M173 20 218 48 236 99 275 131 258 183 221 175 198 137 161 119Z" />
+                    <path class="region chungnam" d="M104 128 129 165 175 174 170 215 128 240 94 212 121 164Z" />
+                    <path class="region chungbuk" d="M175 174 198 137 258 183 237 216 205 235 170 215Z" />
+                    <path class="region gyeongbuk" d="M205 235 237 216 285 227 250 273 264 328 225 367 195 333 197 276Z" />
+                    <path class="region jeonbuk" d="M94 212 128 240 170 215 197 276 160 305 112 288 121 270Z" />
+                    <path class="region jeonnam" d="M112 288 160 305 155 383 150 446 112 407 111 362 73 335Z" />
+                    <path class="region gyeongnam" d="M160 305 197 276 225 367 213 432 175 481 150 446 155 383Z" />
+                    <ellipse class="region jeju" cx="96" cy="493" rx="44" ry="17" />
+                  </g>
+                  <g class="telepathy-metro-dots">
+                    <circle class="seoul" cx="145" cy="108" r="8"/><circle class="incheon" cx="126" cy="113" r="6"/>
+                    <circle class="sejong" cx="151" cy="204" r="5"/><circle class="daejeon" cx="153" cy="226" r="7"/>
+                    <circle class="daegu" cx="219" cy="291" r="7"/><circle class="ulsan" cx="244" cy="344" r="7"/>
+                    <circle class="busan" cx="224" cy="385" r="8"/><circle class="gwangju" cx="127" cy="337" r="7"/>
+                  </g>
+                  <g class="telepathy-map-labels">
+                    <text x="199" y="94">강원</text><text x="128" y="147">경기</text><text x="132" y="197">충남</text>
+                    <text x="201" y="195">충북</text><text x="224" y="261">경북</text><text x="125" y="270">전북</text>
+                    <text x="105" y="375">전남</text><text x="183" y="399">경남</text><text x="80" y="498">제주</text>
+                    <text class="metro-label" x="132" y="96">서울</text><text class="metro-label" x="137" y="221">대전</text>
+                    <text class="metro-label" x="105" y="331">광주</text><text class="metro-label" x="229" y="404">부산</text>
+                  </g>
+                </svg>
+                <span class="telepathy-marker is-y" data-player-marker="y" aria-label="Y 무도리 말"><img src="assets/generated/stamps/mudori-complete-cutout.png?v=1" alt="" /><b>Y</b></span>
+                <span class="telepathy-marker is-j" data-player-marker="j" aria-label="J 무도리 말"><img src="assets/generated/stamps/mudori-complete-cutout.png?v=1" alt="" /><b>J</b></span>
               </div>
               <div class="telepathy-forms">
-                ${['y','j'].map(player => `<form data-player-form="${player}"><h4>${player.toUpperCase()} 무도리</h4><select name="region" required><option value="">지역명</option>${['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'].map(region=>`<option>${region}</option>`).join('')}</select><input name="place" placeholder="장소명" autocomplete="off" required /><button type="submit">비밀 제출</button></form>`).join('')}
+                ${['y','j'].map(player => `<form data-player-form="${player}"><h4><span>${player.toUpperCase()}</span> 무도리의 비밀 답안</h4><div class="telepathy-form-row"><select name="region" required aria-label="시도 선택"><option value="">시·도</option>${Object.keys(telepathyDistricts).map(region=>`<option>${region}</option>`).join('')}</select><select name="district" required disabled aria-label="세부 도시 또는 구 선택"><option value="">세부 도시·구</option></select></div><input name="place" placeholder="정확한 추억 장소명" autocomplete="off" required /><button type="submit">비밀 제출</button></form>`).join('')}
               </div>
             </div>
             <button class="telepathy-retry" data-telepathy-retry hidden>처음부터 다시 도전</button>

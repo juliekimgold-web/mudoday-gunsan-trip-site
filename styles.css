@@ -340,7 +340,7 @@ a { color: inherit; }
   pointer-events:none;
   opacity:0;
   transform-origin:50% 20%;
-  animation:placardSmack 6.15s cubic-bezier(.16,.9,.2,1) .35s both;
+  animation:placardSmack 4.35s cubic-bezier(.16,.9,.2,1) .25s both;
   filter:drop-shadow(0 24px 22px rgba(0,0,0,.58));
 }
 .intro-placard::before {
@@ -351,19 +351,20 @@ a { color: inherit; }
   opacity:0;
   background:repeating-conic-gradient(from 2deg,rgba(245,216,70,.86) 0 5deg,transparent 5deg 13deg);
   transform:scale(.3) rotate(-12deg);
-  animation:placardImpactBurst 1.35s ease-out .78s both;
+  animation:placardImpactBurst 1.05s ease-out .52s both;
 }
 .intro-placard-image {
   display:block;
   width:100%;
   max-height:82vh;
   object-fit:contain;
-  clip-path:polygon(22.8% 13.4%,83.2% 12.5%,86.3% 92.6%,19.6% 87.2%);
+  clip-path:polygon(22.4% 11.8%,83.7% 11.6%,87% 94%,19.4% 87.6%);
+  filter:saturate(1.04) contrast(1.02);
 }
-.intro-title { position:relative; z-index:3; grid-area:1 / 1; width:min(1120px,94vw); margin:.5rem auto 0; opacity:0; animation:titleCrash .78s cubic-bezier(.2,1.5,.4,1) 6.55s forwards; }
+.intro-title { position:relative; z-index:3; grid-area:1 / 1; width:min(1120px,94vw); margin:.5rem auto 0; opacity:0; animation:titleCrash .62s cubic-bezier(.2,1.35,.4,1) 4.56s both; }
 .intro-mascot { width: min(1080px, 92vw); margin: auto; filter: drop-shadow(0 10px 0 rgba(0,0,0,.6)); }
 .intro-edition { position: relative; z-index: 2; display: block; width: max-content; max-width: 90%; margin: -1.4rem auto 0; padding: .45rem .85rem; color: #fff; background: rgba(17,17,17,.88); border: 1px solid rgba(255,255,255,.72); border-radius: 8px; font-size: clamp(.7rem, 1.8vw, .95rem); font-weight: 850; letter-spacing: .12em; }
-.enter-button { position:relative; z-index:5; grid-area:2 / 1; display:inline-flex; gap:1rem; align-items:center; margin-top:1.4rem; padding:.9rem 1.4rem; border:1px solid rgba(255,255,255,.85); border-radius:10px; color:#fff; background:rgba(0,0,0,.72); font-weight:850; cursor:pointer; opacity:0; transform:translateY(14px); animation:fadeCaption .5s ease 7.38s forwards; }
+.enter-button { position:relative; z-index:5; grid-area:2 / 1; display:inline-flex; gap:1rem; align-items:center; margin-top:1.4rem; padding:.9rem 1.4rem; border:1px solid rgba(255,255,255,.85); border-radius:10px; color:#fff; background:rgba(0,0,0,.72); font-weight:850; cursor:pointer; opacity:0; transform:translateY(14px); animation:fadeCaption .5s ease 5.22s both; }
 .enter-button:hover { color: #111; background: var(--yellow); }
 
 .case-gate {
@@ -968,7 +969,11 @@ footer small { color: var(--muted); }
 @keyframes suitcaseContentsIn { from { opacity: 0; transform: translateY(18px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
 @keyframes fadeCaption { to { opacity: 1; transform: translateY(0); } }
-@keyframes titleCrash { from { opacity: 0; transform: scale(2.2) rotate(8deg); } to { opacity: 1; transform: scale(1); } }
+@keyframes titleCrash {
+  0% { opacity:.28; transform:scale(1.5) rotate(3deg); }
+  72% { opacity:1; transform:scale(.97) rotate(-.35deg); }
+  100% { opacity:1; transform:scale(1) rotate(0); }
+}
 @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
 @keyframes placardSmack {
   0% { opacity:0; transform:translateY(-48vh) scale(1.45) rotate(-9deg); filter:blur(5px) brightness(1.35) drop-shadow(0 30px 28px rgba(0,0,0,.65)); }
@@ -2792,25 +2797,55 @@ body.mission-modal-open { overflow:hidden; }
 .telepathy-title-beat img { width:min(820px,88vw); max-height:420px; object-fit:contain; filter:drop-shadow(0 16px 22px rgba(0,0,0,.65)); }
 .telepathy-title-beat.is-active img { animation:partnerTitleHit 1.35s cubic-bezier(.16,.86,.22,1) both; }
 .telepathy-game-beat { align-items:start; overflow:auto; padding-top:3rem; }
-.telepathy-game { width:min(900px,94vw); padding:1rem 1.2rem 1.15rem; border:1px solid rgba(120,232,218,.35); border-radius:18px; color:#efffff; background:rgba(8,27,31,.96); box-shadow:0 22px 55px rgba(0,0,0,.55); }
+.telepathy-round-curtain { position:absolute; inset:0; z-index:8; display:flex; visibility:hidden; flex-direction:column; align-items:center; justify-content:center; color:#fff; background:radial-gradient(circle at 50% 48%,rgba(25,82,78,.42),transparent 35%),rgba(0,0,0,.96); opacity:0; pointer-events:none; }
+.telepathy-round-curtain.is-active { visibility:visible; animation:telepathyRoundCurtain 1.45s ease both; }
+.telepathy-round-curtain span { margin-bottom:.6rem; color:#70e5d3; font-size:.65rem; font-weight:950; letter-spacing:.28em; }
+.telepathy-round-curtain b { font-size:clamp(2.1rem,6vw,4.8rem); line-height:.8; letter-spacing:.08em; -webkit-text-stroke:2px #1a1d1d; paint-order:stroke fill; text-shadow:0 6px 0 rgba(0,0,0,.72); }
+.telepathy-round-curtain strong { color:#f0cf34; font-family:"Arial Black",Pretendard,sans-serif; font-size:clamp(6rem,18vw,12rem); line-height:.9; -webkit-text-stroke:5px #111; paint-order:stroke fill; text-shadow:0 10px 0 #176c62,0 18px 28px rgba(0,0,0,.72); }
+.telepathy-round-curtain small { margin-top:1rem; padding:.45rem .8rem; border-top:1px solid rgba(255,255,255,.42); border-bottom:1px solid rgba(255,255,255,.42); font-size:.72rem; font-weight:850; letter-spacing:.02em; }
+.telepathy-game { width:min(980px,96vw); padding:1rem 1.2rem 1.15rem; border:1px solid rgba(120,232,218,.35); border-radius:18px; color:#efffff; background:rgba(8,27,31,.96); box-shadow:0 22px 55px rgba(0,0,0,.55); transition:opacity .4s ease,transform .4s ease; }
+.telepathy-game-beat.is-round-intro .telepathy-game { opacity:0; transform:scale(.96); pointer-events:none; }
 .telepathy-game header { text-align:center; }
 .telepathy-game header > span { color:#66e6d3; font-size:.62rem; font-weight:950; letter-spacing:.16em; }
 .telepathy-game h3 { margin:.2rem 0; font-size:clamp(1.35rem,3vw,2rem); }
 .telepathy-game header p { margin:.15rem 0 .55rem; color:#bdd3d2; font-size:.7rem; font-weight:700; }
-.telepathy-playfield { display:grid; grid-template-columns:minmax(240px,.8fr) 1.2fr; gap:1rem; align-items:center; }
-.telepathy-map { position:relative; width:min(280px,60vw); margin:auto; aspect-ratio:360/520; }
-.telepathy-map svg { width:100%; height:100%; overflow:visible; }
-.telepathy-map path,.telepathy-map ellipse { fill:#d7e7d3; stroke:#6aa699; stroke-width:6; filter:drop-shadow(0 9px 12px rgba(0,0,0,.38)); }
-.telepathy-marker { position:absolute; left:50%; top:88%; z-index:3; display:grid; place-items:center; width:46px; height:46px; border:4px solid #fff; border-radius:52% 48% 55% 45%; background:#452f3a; box-shadow:0 7px 12px rgba(0,0,0,.4); transition:left 1s cubic-bezier(.22,.8,.2,1),top 1s cubic-bezier(.22,.8,.2,1),transform .25s; transform:translate(-50%,-50%); }
-.telepathy-marker::after { content:"?"; color:#fff; font-size:1.8rem; font-weight:1000; }
-.telepathy-marker b { position:absolute; top:-11px; right:-9px; display:grid; place-items:center; width:22px; height:22px; border-radius:50%; color:#152125; background:#65e5d1; font-size:.64rem; }
-.telepathy-marker.is-j { margin-left:22px; background:#e6b92d; }
-.telepathy-marker.is-j b { background:#f49ac1; }
-.telepathy-marker.is-arrived { transform:translate(-50%,-50%) scale(1.13); }
+.telepathy-playfield { display:grid; grid-template-columns:minmax(310px,.9fr) 1.1fr; gap:1.25rem; align-items:center; }
+.telepathy-map { position:relative; display:grid; place-items:center; width:min(340px,72vw); margin:auto; padding:1.8rem .55rem .45rem; aspect-ratio:360/520; overflow:hidden; border:4px solid #f5f1e7; border-radius:6px; background:#d9dcdb; box-shadow:0 13px 0 rgba(0,0,0,.18),0 20px 34px rgba(0,0,0,.36),inset 0 0 0 2px rgba(23,44,44,.11); }
+.telepathy-map-kicker { position:absolute; top:.48rem; left:.65rem; z-index:2; color:#404846; font-size:.58rem; font-weight:950; letter-spacing:.08em; }
+.telepathy-map svg { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 8px 9px rgba(0,0,0,.2)); }
+.telepathy-regions .region { stroke:#fff; stroke-width:3.2; stroke-linejoin:round; }
+.telepathy-regions .gyeonggi { fill:#c4dd24; }
+.telepathy-regions .gangwon { fill:#74bf22; }
+.telepathy-regions .chungnam { fill:#4abf94; }
+.telepathy-regions .chungbuk { fill:#82c79b; }
+.telepathy-regions .gyeongbuk { fill:#328dac; }
+.telepathy-regions .jeonbuk { fill:#efbd22; }
+.telepathy-regions .jeonnam { fill:#ef904c; }
+.telepathy-regions .gyeongnam { fill:#e77c8a; }
+.telepathy-regions .jeju { fill:#aa74b5; }
+.telepathy-metro-dots circle { stroke:#fff; stroke-width:2.5; }
+.telepathy-metro-dots .seoul { fill:#ec4c62; }.telepathy-metro-dots .incheon { fill:#6ba864; }
+.telepathy-metro-dots .sejong { fill:#ffd642; }.telepathy-metro-dots .daejeon { fill:#177761; }
+.telepathy-metro-dots .daegu { fill:#17677d; }.telepathy-metro-dots .ulsan { fill:#3d63de; }
+.telepathy-metro-dots .busan { fill:#d73c6b; }.telepathy-metro-dots .gwangju { fill:#e67e33; }
+.telepathy-map-labels text { fill:#fff; font-family:Pretendard,"Noto Sans KR",sans-serif; font-size:15px; font-weight:950; text-anchor:middle; paint-order:stroke; stroke:rgba(0,0,0,.18); stroke-width:2px; }
+.telepathy-map-labels .metro-label { fill:#303534; font-size:10px; stroke:#fff; stroke-width:3px; }
+.telepathy-marker { position:absolute; left:50%; top:88%; z-index:4; display:grid; place-items:center; width:58px; height:64px; transition:left 1s cubic-bezier(.22,.8,.2,1),top 1s cubic-bezier(.22,.8,.2,1),transform .25s; transform:translate(-50%,-50%); filter:drop-shadow(0 7px 7px rgba(0,0,0,.45)); }
+.telepathy-marker img { display:block; width:100%; height:100%; object-fit:contain; }
+.telepathy-marker b { position:absolute; top:-6px; right:-5px; display:grid; place-items:center; min-width:25px; height:25px; padding:0 .2rem; border:3px solid #fff; border-radius:50%; color:#102826; background:#64e5cf; box-shadow:0 3px 7px rgba(0,0,0,.35); font-size:.7rem; font-weight:1000; }
+.telepathy-marker.is-y img { filter:drop-shadow(0 0 1px #5ef4dd); }
+.telepathy-marker.is-j { margin-left:24px; }
+.telepathy-marker.is-j img { filter:hue-rotate(34deg) saturate(1.18) drop-shadow(0 0 1px #f5d659); }
+.telepathy-marker.is-j b { background:#f6cd40; }
+.telepathy-marker.is-arrived { transform:translate(-50%,-50%) scale(1.12); }
 .telepathy-forms { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
 .telepathy-forms form { display:grid; gap:.45rem; padding:.8rem; border:1px solid rgba(255,255,255,.15); border-radius:13px; background:rgba(255,255,255,.045); }
-.telepathy-forms h4 { margin:0; color:#75ead9; font-size:.78rem; }
-.telepathy-forms select,.telepathy-forms input { width:100%; padding:.62rem .65rem; border:1px solid rgba(255,255,255,.2); border-radius:8px; color:#fff; background:#122b30; font:inherit; }
+.telepathy-forms h4 { margin:0; color:#d7efeb; font-size:.78rem; }
+.telepathy-forms h4 span { display:inline-grid; place-items:center; width:1.55rem; height:1.55rem; margin-right:.25rem; border:2px solid #fff; border-radius:50%; color:#102826; background:#65e5d1; box-shadow:0 2px 0 rgba(0,0,0,.3); }
+.telepathy-forms form:nth-child(2) h4 span { background:#f6cd40; }
+.telepathy-form-row { display:grid; grid-template-columns:.8fr 1.2fr; gap:.4rem; }
+.telepathy-forms select,.telepathy-forms input { width:100%; min-width:0; padding:.62rem .65rem; border:1px solid rgba(255,255,255,.2); border-radius:8px; color:#fff; background:#122b30; font:inherit; }
+.telepathy-forms select:disabled { color:#708481; cursor:not-allowed; opacity:.62; }
 .telepathy-forms button,.telepathy-retry { padding:.62rem; border:0; border-radius:8px; color:#0b292b; background:#70e5d3; font-weight:950; cursor:pointer; }
 .telepathy-forms form.is-submitted { opacity:.55; }
 .telepathy-retry { display:block; margin:.7rem auto 0; }
@@ -2823,6 +2858,7 @@ body.mission-modal-open { overflow:hidden; }
 @keyframes telepathyLeft { from { opacity:0; transform:translateX(-42vw) scale(.74); filter:blur(10px); } 70% { opacity:1; transform:translateX(2vw) scale(1.03); filter:none; } to { opacity:1; transform:none; } }
 @keyframes telepathyRight { from { opacity:0; transform:translateX(42vw) scale(.74); filter:blur(10px); } 70% { opacity:1; transform:translateX(-2vw) scale(1.03); filter:none; } to { opacity:1; transform:none; } }
 @keyframes telepathyCaption { from { opacity:0; transform:scale(1.7); filter:blur(7px); } 65% { opacity:1; transform:scale(.94); filter:none; } to { opacity:1; transform:none; } }
+@keyframes telepathyRoundCurtain { 0% { opacity:0; } 13%,76% { opacity:1; } 100% { opacity:0; } }
 
 .partner-story {
   position:relative;
@@ -3587,9 +3623,9 @@ body.mission-modal-open { overflow:hidden; }
   .telepathy-game-beat { padding-top:3.2rem; }
   .telepathy-game { width:96vw; padding:.75rem; }
   .telepathy-playfield { grid-template-columns:1fr; gap:.4rem; }
-  .telepathy-map { width:38vw; }
-  .telepathy-marker { width:34px; height:34px; border-width:3px; }
-  .telepathy-marker::after { font-size:1.25rem; }
+  .telepathy-map { width:min(250px,72vw); padding-top:1.55rem; }
+  .telepathy-marker { width:43px; height:49px; }
+  .telepathy-marker b { min-width:20px; height:20px; border-width:2px; font-size:.58rem; }
   .mission-modal[data-theme="nostalgia"] .mission-modal-card { width:100vw; height:100dvh; max-height:100dvh; }
   .nostalgia-story { min-height:100dvh; }
   .nostalgia-story-beat { padding:3.1rem .55rem 9.6rem; }
@@ -3602,6 +3638,7 @@ body.mission-modal-open { overflow:hidden; }
   .nostalgia-briefing h3 { font-size:1.45rem; }
   .telepathy-forms { gap:.4rem; }
   .telepathy-forms form { padding:.55rem; }
+  .telepathy-form-row { grid-template-columns:1fr 1.25fr; }
   .telepathy-forms select,.telepathy-forms input,.telepathy-forms button { padding:.5rem; font-size:.7rem; }
 }
 
@@ -3746,4 +3783,33 @@ body.mission-modal-open { overflow:hidden; }
 }
 @media (max-width:480px) {
   .case-3d-stage { --case-w:88vw; --case-h:54.93vw; --half-w:44vw; --half-h:27.465vw; --case-d:clamp(48px,12vw,62px); }
+}
+
+/* Preserve the original photographic end states; hide the image swap at edge-on. */
+.intro-placard-image { clip-path:polygon(16% 9%,84% 9%,84% 96.6%,16% 96.6%); }
+.frame-upright { opacity:1; transform:scale(.96); animation:none; }
+.frame-laid { opacity:0; transform:perspective(1400px) rotateX(78deg) scale(.86) translateY(14px); animation:none; }
+.briefcase.turning .frame-upright { animation:photoCaseForwardOut 2.1s cubic-bezier(.37,0,.2,1) both; }
+.briefcase.turning .frame-laid { animation:photoCaseForwardIn 2.1s cubic-bezier(.37,0,.2,1) both; }
+.briefcase.inspecting .frame-upright { opacity:0; animation:none; }
+.briefcase.inspecting .frame-laid { opacity:1; transform:perspective(1400px) rotateX(0) scale(1); animation:none; }
+.briefcase.opening .frame-laid { animation:photoCaseLaidOut 1.1s cubic-bezier(.4,0,.2,1) both; }
+
+@keyframes photoCaseForwardOut {
+  0% { opacity:1; filter:blur(0); transform:perspective(1400px) rotateX(0) scale(.96) translateY(0); }
+  30% { opacity:1; filter:blur(0); transform:perspective(1400px) rotateX(-18deg) scale(.945) translateY(3px); }
+  52% { opacity:1; filter:blur(0); transform:perspective(1400px) rotateX(-62deg) scale(.91) translateY(10px); }
+  66% { opacity:.72; filter:blur(.4px); transform:perspective(1400px) rotateX(-82deg) scale(.89) translateY(16px); }
+  100% { opacity:0; filter:blur(2px); transform:perspective(1400px) rotateX(-94deg) scale(.87) translateY(20px); }
+}
+@keyframes photoCaseForwardIn {
+  0%,38% { opacity:0; filter:blur(2px); transform:perspective(1400px) rotateX(78deg) scale(.86) translateY(14px); }
+  54% { opacity:.2; filter:blur(1px); transform:perspective(1400px) rotateX(58deg) scale(.89) translateY(10px); }
+  72% { opacity:.74; filter:blur(0); transform:perspective(1400px) rotateX(20deg) scale(.96) translateY(4px); }
+  88% { opacity:1; transform:perspective(1400px) rotateX(-2deg) scale(1.01) translateY(-1px); }
+  100% { opacity:1; filter:blur(0); transform:perspective(1400px) rotateX(0) scale(1) translateY(0); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .briefcase.turning .frame-upright,.briefcase.turning .frame-laid { animation-duration:.01ms !important; }
 }
