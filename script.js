@@ -1189,9 +1189,13 @@ function replayIntro() {
   routeTransition.setAttribute('aria-hidden', 'true');
   intro.classList.remove('hidden');
   document.body.classList.add('intro-open');
-  intro.querySelector('.intro-film').style.animation = 'none';
+  intro.querySelectorAll('.intro-film, .intro-placard, .intro-title, .enter-button').forEach((element) => {
+    element.style.animation = 'none';
+  });
   void intro.offsetWidth;
-  intro.querySelector('.intro-film').style.animation = '';
+  intro.querySelectorAll('.intro-film, .intro-placard, .intro-title, .enter-button').forEach((element) => {
+    element.style.animation = '';
+  });
 }
 
 enterButton.addEventListener('click', closeIntro);
@@ -1291,6 +1295,14 @@ document.addEventListener('keydown', (event) => {
 });
 
 caseReturn.addEventListener('click', () => showCase(true));
+
+const previewParams = new URLSearchParams(window.location.search);
+if (previewParams.get('preview') === 'lunch') {
+  window.setTimeout(() => {
+    showCase(true);
+    window.setTimeout(startLunchChance, 520);
+  }, 180);
+}
 
 function updateCountdown() {
   const target = new Date('2026-08-22T00:00:00+09:00');
