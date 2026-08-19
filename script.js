@@ -207,7 +207,8 @@ const completedMissions = new Set(savedMissionKeys);
 
 function updateMissionBadges() {
   caseProps.forEach((prop) => {
-    const isComplete = completedMissions.has(prop.dataset.content);
+    const isRepeatable = prop.dataset.content === 'telepathy';
+    const isComplete = !isRepeatable && completedMissions.has(prop.dataset.content);
     prop.classList.toggle('is-complete', isComplete);
     if (isComplete) prop.setAttribute('data-complete-label', '인증 완료');
     else prop.removeAttribute('data-complete-label');
@@ -799,7 +800,7 @@ function openMission(contentKey, trigger) {
         <h2 id="missionModalTitle">${content.title}</h2>
         <p>${content.routeIntro}</p>
         <div class="route-poster-meta"><b>2026.08.22 SAT</b><span>ONE DAY · TWO FRIENDS · GUNSAN</span></div>
-        <img src="${content.titleImage}" alt="접힌 군산 작전지도" />
+        <img src="${content.titleImage}" alt="접힌 군산 여행지도" />
       </header>
       <div class="route-stop-grid" aria-label="군산 하루 코스">
         ${content.stops.map((stop, index) => `
@@ -1284,7 +1285,7 @@ function resetCase() {
   caseGate.classList.remove('zooming', 'departing');
   caseProps.forEach((prop) => prop.classList.remove('selected'));
   comboWheels.forEach((wheel) => setWheelValue(wheel, 0));
-  caseCaption.textContent = '오늘의 여행 작전은 이 가방 안에 있습니다.';
+  caseCaption.textContent = '오늘의 여행 일정은 이 가방 안에 있습니다.';
   caseMessage.textContent = '각 숫자를 누르면 다이얼이 돌아갑니다.';
   caseGameCaption.textContent = '가방을 클릭해 잠금장치를 확인하자!';
 }
@@ -1299,7 +1300,7 @@ function showCase(opened = false) {
     briefcase.classList.add('inspecting', 'unlocked', 'inventory-ready');
     casePeek.hidden = true;
     caseCaption.textContent = '가방 속 특집들이 오늘의 여행을 완성합니다.';
-    caseGameCaption.textContent = '배지나 군산 작전지도를 선택해 내용을 확인하자!';
+    caseGameCaption.textContent = '배지나 군산 여행지도를 선택해 내용을 확인하자!';
   }
   caseGate.classList.add('active');
   caseGate.setAttribute('aria-hidden', 'false');
@@ -1335,12 +1336,12 @@ openingReplay.addEventListener('click', replayIntro);
 caseInspect.addEventListener('click', () => {
   if (briefcase.classList.contains('turning') || briefcase.classList.contains('inspecting')) return;
   briefcase.classList.add('turning');
-  caseCaption.textContent = '먼저 잠긴 작전 가방을 열겠습니다.';
+  caseCaption.textContent = '먼저 잠긴 007 가방을 열겠습니다.';
   caseGameCaption.textContent = '서 있던 검은 가방이 천천히 앞으로 눕혀지고 있다…';
   caseMotionTimer = window.setTimeout(() => {
     briefcase.classList.remove('turning');
     briefcase.classList.add('inspecting');
-    caseCaption.textContent = '비밀번호를 풀면 오늘의 작전이 공개됩니다.';
+    caseCaption.textContent = '비밀번호를 풀면 오늘의 일정이 공개됩니다.';
     caseGameCaption.textContent = '가방이 멈췄다. 비밀번호 007을 입력하자!';
     comboWheels[0]?.focus();
   }, 2100);
@@ -1363,7 +1364,7 @@ unlockCase.addEventListener('click', () => {
   const code = comboWheels.map((wheel) => wheel.dataset.digit).join('');
   if (code === '007') {
     briefcase.classList.add('opening');
-    caseCaption.textContent = '잠금이 풀렸습니다. 작전 가방을 공개합니다.';
+    caseCaption.textContent = '잠금이 풀렸습니다. 007 가방을 공개합니다.';
     caseGameCaption.textContent = '정답이다! 가방이 열리기 시작했다!';
     caseMotionTimer = window.setTimeout(() => {
       briefcase.classList.remove('turning', 'inspecting', 'opening');
@@ -1378,7 +1379,7 @@ unlockCase.addEventListener('click', () => {
   briefcase.classList.remove('wrong');
   void briefcase.offsetWidth;
   briefcase.classList.add('wrong');
-  caseCaption.textContent = '작전 가방의 암호는 세 자리 숫자입니다.';
+  caseCaption.textContent = '007 가방의 암호는 세 자리 숫자입니다.';
   caseMessage.textContent = `${code}은(는) 아닙니다. 힌트는 007!`;
 });
 
@@ -1412,7 +1413,7 @@ casePeek.addEventListener('click', () => {
   casePeek.hidden = true;
   briefcase.classList.add('inventory-ready');
   caseCaption.textContent = '각 배지는 오늘 진행할 하나의 특집입니다.';
-  caseGameCaption.textContent = '확인할 특집 배지나 군산 작전지도를 선택하자!';
+  caseGameCaption.textContent = '확인할 특집 배지나 군산 여행지도를 선택하자!';
 });
 
 missionCloseButtons.forEach((button) => button.addEventListener('click', closeMission));
