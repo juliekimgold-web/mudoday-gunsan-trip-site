@@ -410,10 +410,49 @@ function setupTelepathyGame(contentKey) {
   const markers = { y:game.querySelector('[data-player-marker="y"]'), j:game.querySelector('[data-player-marker="j"]') };
   const gameBeat = game.closest('.telepathy-game-beat');
   const roundCurtain = gameBeat.querySelector('[data-telepathy-round-curtain]');
+  const reaction = gameBeat.querySelector('[data-telepathy-reaction]');
+  const reactionImage = reaction.querySelector('img');
+  const map = game.querySelector('.telepathy-map');
   let roundCurtainTimer = null;
+  let reactionTimer = null;
+
+  const reactionAssets = {
+    'round-1':'assets/generated/telepathy/reactions/fail-round-1.png?v=1',
+    'round-2':'assets/generated/telepathy/reactions/fail-round-2.png?v=1',
+    'round-3':'assets/generated/telepathy/reactions/fail-round-3.png?v=1',
+    close:'assets/generated/telepathy/reactions/fail-close.png?v=1',
+    encourage:'assets/generated/telepathy/reactions/fail-encourage.png?v=1',
+    success:'assets/generated/telepathy/reactions/success.png?v=1',
+  };
+  Object.values(reactionAssets).forEach((src) => { const preload = new Image(); preload.src = src; });
+
+  function showReaction(kind, onDone) {
+    window.clearTimeout(reactionTimer);
+    gameBeat.scrollTop = 0;
+    reaction.dataset.kind = kind;
+    reactionImage.src = reactionAssets[kind];
+    reactionImage.alt = kind === 'success' ? '환희, 어! 성공이다' : '텔레파시 실패 반응 자막';
+    gameBeat.classList.add('is-reacting');
+    reaction.classList.remove('is-active');
+    void reaction.offsetWidth;
+    reaction.classList.add('is-active');
+    reactionTimer = window.setTimeout(() => {
+      reaction.classList.remove('is-active');
+      gameBeat.classList.remove('is-reacting');
+      onDone?.();
+    }, kind === 'success' ? 2800 : 2300);
+  }
+
+  function answersAreClose() {
+    if (answers.y.region === answers.j.region) return true;
+    const [yx, yy] = coords[answers.y.region] || [0,0];
+    const [jx, jy] = coords[answers.j.region] || [100,100];
+    return Math.hypot(yx - jx, yy - jy) <= 15;
+  }
 
   function showRoundIntro() {
     window.clearTimeout(roundCurtainTimer);
+    gameBeat.scrollTop = 0;
     roundCurtain.querySelector('strong').textContent = round;
     gameBeat.classList.add('is-round-intro');
     roundCurtain.classList.remove('is-active');
@@ -422,11 +461,14 @@ function setupTelepathyGame(contentKey) {
     roundCurtainTimer = window.setTimeout(() => {
       gameBeat.classList.remove('is-round-intro');
       roundCurtain.classList.remove('is-active');
+      map.classList.remove('is-pindrop-loading');
+      void map.offsetWidth;
+      map.classList.add('is-pindrop-loading');
     }, 1450);
   }
 
   function resetMarkers() {
-    Object.values(markers).forEach((marker) => { marker.style.left='50%'; marker.style.top='88%'; marker.classList.remove('is-arrived'); });
+    Object.values(markers).forEach((marker) => { marker.style.left='50%'; marker.style.top='88%'; marker.classList.remove('is-arrived','is-dropping'); });
   }
   function resetRound() {
     answers = { y:null, j:null };
@@ -447,20 +489,23 @@ function setupTelepathyGame(contentKey) {
     if (same) {
       status.textContent = `텔레파시 성공! 두 사람 모두 “${answers.y.place}”`;
       game.classList.add('is-success');
-      window.setTimeout(() => completeMissionWithPhoto(contentKey), 1300);
+      showReaction('success', () => completeMissionWithPhoto(contentKey));
       return;
     }
     used.add(answers.y.key);
     used.add(answers.j.key);
     status.textContent = `Y는 ${answers.y.region} ${answers.y.district}, J는 ${answers.j.region} ${answers.j.district}! 텔레파시 불발…`;
+    const reactionKind = answersAreClose() ? 'close' : round >= 4 ? 'encourage' : `round-${round}`;
     if (round >= 5) {
-      game.classList.add('is-failed');
-      retry.hidden = false;
-      status.textContent = '5번의 기회 종료! 다시 처음부터 도전할 수 있어요.';
+      showReaction(reactionKind, () => {
+        game.classList.add('is-failed');
+        retry.hidden = false;
+        status.textContent = '5번의 기회 종료! 다시 처음부터 도전할 수 있어요.';
+      });
       return;
     }
     round += 1;
-    window.setTimeout(() => { resetRound(); showRoundIntro(); }, 1800);
+    showReaction(reactionKind, () => { resetRound(); showRoundIntro(); });
   }
   game.querySelectorAll('[data-player-form]').forEach((form) => {
     form.elements.region.addEventListener('change', () => {
@@ -485,7 +530,9 @@ function setupTelepathyGame(contentKey) {
       const [left, top] = coords[region] || [50,50];
       markers[player].style.left = `${left}%`;
       markers[player].style.top = `${top}%`;
-      markers[player].classList.add('is-arrived');
+      markers[player].classList.remove('is-dropping');
+      void markers[player].offsetWidth;
+      markers[player].classList.add('is-arrived','is-dropping');
       status.textContent = `${player.toUpperCase()} 제출 완료! 다른 친구를 기다리는 중…`;
       finishRound();
     });
@@ -737,6 +784,7 @@ function setupPrincessMission(contentKey) {
 function openMission(contentKey, trigger) {
   const content = missionContents[contentKey];
   if (!content) return;
+  if (contentKey === 'telepathy') lunchChancePending = true;
   missionReturnFocus = trigger;
   activeMissionKey = contentKey;
   missionClosing = false;
@@ -901,6 +949,7 @@ function openMission(contentKey, trigger) {
         <article class="telepathy-story-beat telepathy-title-beat" data-telepathy-beat aria-hidden="true"><img src="assets/generated/telepathy/title-cutout.png?v=1" alt="우리들의 보이지 않는 연결고리 텔레파시" /></article>
         <article class="telepathy-story-beat telepathy-game-beat" data-telepathy-beat aria-hidden="true">
           <div class="telepathy-round-curtain" data-telepathy-round-curtain aria-live="polite" aria-atomic="true"><span>TELEPATHY GAME</span><b>ROUND</b><strong>1</strong><small>같은 추억 장소를 떠올려라!</small></div>
+          <div class="telepathy-reaction" data-telepathy-reaction aria-live="assertive"><div class="telepathy-confetti" aria-hidden="true">${Array.from({length:28},(_,index)=>`<i style="--i:${index};--x:${(index*37)%100}%;--h:${(index*43)%360};--r:${index*29}deg;--d:${(index%7)*.06}s;--drift:${((index%9)-4)*18}px"></i>`).join('')}</div><img src="" alt="" /></div>
           <div class="telepathy-game" data-telepathy-game>
             <header><span data-telepathy-round>ROUND 1 / 5</span><h3>우리 둘의 추억 장소를 맞춰라!</h3><p data-telepathy-status>같은 추억의 장소를 떠올려보세요.</p></header>
             <div class="telepathy-playfield">
@@ -924,6 +973,9 @@ function openMission(contentKey, trigger) {
                     <circle class="daegu" cx="219" cy="291" r="7"/><circle class="ulsan" cx="244" cy="344" r="7"/>
                     <circle class="busan" cx="224" cy="385" r="8"/><circle class="gwangju" cx="127" cy="337" r="7"/>
                   </g>
+                  <path class="telepathy-route-trace" d="M145 108 C188 137 141 204 153 226 S214 254 219 291 S199 343 224 385" />
+                  <g class="telepathy-loader-pin pin-start"><path d="M145 76c-10 0-18 8-18 18 0 14 18 31 18 31s18-17 18-31c0-10-8-18-18-18z"/><circle cx="145" cy="94" r="5"/></g>
+                  <g class="telepathy-loader-pin pin-end"><path d="M224 347c-10 0-18 8-18 18 0 14 18 31 18 31s18-17 18-31c0-10-8-18-18-18z"/><circle cx="224" cy="365" r="5"/></g>
                   <g class="telepathy-map-labels">
                     <text x="199" y="94">강원</text><text x="128" y="147">경기</text><text x="132" y="197">충남</text>
                     <text x="201" y="195">충북</text><text x="224" y="261">경북</text><text x="125" y="270">전북</text>
@@ -1122,8 +1174,7 @@ function openMission(contentKey, trigger) {
 
 function finishMissionClose() {
   const shouldStartLunchChance = lunchChancePending
-    && activeMissionKey === 'telepathy'
-    && completedMissions.has('telepathy');
+    && activeMissionKey === 'telepathy';
   if (shouldStartLunchChance) lunchChancePending = false;
   window.clearTimeout(missionIntroTimer);
   clearPrincessRuntime();
